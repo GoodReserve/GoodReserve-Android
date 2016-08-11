@@ -25,7 +25,7 @@ import android.widget.ImageView;
 
 import com.android.volley.toolbox.NetworkImageView;
 
-import kr.edcan.cumchuck.R;
+import kr.edworopen.goodreserve.R;
 
 
 /**

@@ -1,3 +1,9 @@
+/*
+ * Created by Junseok Oh on 2016.
+ * Copyright by Good-Reserve Project by Sunrin Internet High School EDCAN / IWOP / ZEROPEN
+ * All rights reversed.
+ */
+
 apply plugin: 'com.android.application'
 
 android {
@@ -16,6 +22,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    dataBinding {
+        enabled true
     }
 }
 

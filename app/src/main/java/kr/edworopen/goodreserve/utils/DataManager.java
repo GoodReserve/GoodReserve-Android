@@ -8,12 +8,6 @@ package kr.edworopen.goodreserve.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v4.util.Pair;
-import android.util.Log;
-
-import kr.edcan.cumchuck.model.FacebookUser;
-import kr.edcan.cumchuck.model.TwitterUser;
-import kr.edcan.cumchuck.model.User;
 
 /**
  * Created by KOHA on 7/9/16.

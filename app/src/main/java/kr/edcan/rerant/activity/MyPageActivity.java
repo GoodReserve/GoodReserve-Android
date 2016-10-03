@@ -8,8 +8,12 @@ package kr.edcan.rerant.activity;
 
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 
 import java.util.ArrayList;
 
@@ -25,7 +29,15 @@ public class MyPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_my_page);
+        initAppbarLayout();
         initDefault();
+    }
+
+    private void initAppbarLayout() {
+        setSupportActionBar(binding.toolbar);
+        binding.toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+        getSupportActionBar().setTitle("마이페이지");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initDefault() {
@@ -36,5 +48,22 @@ public class MyPageActivity extends AppCompatActivity {
         arrayList.add(new CommonListData("로그아웃", "Rerant에서 로그아웃 합니다."));
         arrayList.add(new CommonListData("서비스 탈퇴", "Rerant에서 영구적으로 탈퇴합니다."));
         binding.myPageListView.setAdapter(new CommonListViewAdapter(getApplicationContext(), arrayList));
+        binding.myPageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i){
+//                    case
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

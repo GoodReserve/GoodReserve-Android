@@ -10,6 +10,7 @@
         android:id="@+id/activity_my_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FDFDFD"
         android:orientation="vertical"
         tools:context="kr.edcan.rerant.activity.MyPageActivity">
 
@@ -27,6 +28,7 @@
         <ListView
             android:id="@+id/myPageListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="#FDFDFD" />
     </LinearLayout>
 </layout>

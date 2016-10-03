@@ -1,5 +1,6 @@
 package kr.edcan.rerant.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,7 +32,8 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.authNativeLogin:
                 break;
-            case R.id.activity_register:
+            case R.id.authRegister:
+                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
                 break;
         }
     }

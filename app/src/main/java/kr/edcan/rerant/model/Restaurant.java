@@ -7,12 +7,14 @@ import java.util.ArrayList;
  */
 
 public class Restaurant {
+    private String _id;
     private String name, address, phone;
     private ArrayList<String> category;
     private int reservation_max, reservation_current, reservation_cancel, reservation_check;
     private ArrayList<Menu> menu;
 
-    public Restaurant(String name, String address, String phone, ArrayList<String> category, int reservation_max, int reservation_current, int reservation_cancel, int reservation_check, ArrayList<Menu> menu) {
+    public Restaurant(String _id, String name, String address, String phone, ArrayList<String> category, int reservation_max, int reservation_current, int reservation_cancel, int reservation_check, ArrayList<Menu> menu) {
+        this._id = _id;
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -22,6 +24,10 @@ public class Restaurant {
         this.reservation_cancel = reservation_cancel;
         this.reservation_check = reservation_check;
         this.menu = menu;
+    }
+
+    public String get_id() {
+        return _id;
     }
 
     public String getName() {
@@ -60,13 +66,19 @@ public class Restaurant {
         return menu;
     }
 
-    public class Menu{
+    public class Menu {
+        private String _id;
         private String name;
         private int price;
 
-        public Menu(String name, int price) {
+        public Menu(String _id, String name, int price) {
+            this._id = _id;
             this.name = name;
             this.price = price;
+        }
+
+        public String get_id() {
+            return _id;
         }
 
         public String getName() {
@@ -77,12 +89,15 @@ public class Restaurant {
             return price;
         }
     }
-    public class Benefit{
-        private String main_benefit, sub_benefit;
 
-        public Benefit(String main_benefit, String sub_benefit) {
+    public class Benefit {
+        private String main_benefit, sub_benefit;
+        private String _id;
+
+        public Benefit(String main_benefit, String sub_benefit, String _id) {
             this.main_benefit = main_benefit;
             this.sub_benefit = sub_benefit;
+            this._id = _id;
         }
 
         public String getMain_benefit() {
@@ -91,6 +106,10 @@ public class Restaurant {
 
         public String getSub_benefit() {
             return sub_benefit;
+        }
+
+        public String get_id() {
+            return _id;
         }
     }
 }

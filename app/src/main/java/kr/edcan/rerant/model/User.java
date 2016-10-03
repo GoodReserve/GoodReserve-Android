@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class User {
     private int userType;
-    private String email, name, phone, auth_token, reservation;
+    private String email, name, phone, auth_token, reservation, _id;
     private ArrayList<String> reservation_waiting;
 
     public User(int userType, String email, String name, String phone, String auth_token) {

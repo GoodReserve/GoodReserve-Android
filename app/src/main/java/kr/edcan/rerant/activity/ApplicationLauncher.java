@@ -1,6 +1,6 @@
 /*
  * Created by Junseok Oh on 2016.
- * Copyright by Good-Reserve Project by Sunrin Internet High School EDCAN / IWOP / ZEROPEN
+ * Copyright by Good-Reserve Project @kotohana5706
  * All rights reversed.
  */
 

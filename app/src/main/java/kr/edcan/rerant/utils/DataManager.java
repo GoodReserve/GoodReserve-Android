@@ -1,6 +1,6 @@
 /*
  * Created by Junseok Oh on 2016.
- * Copyright by Good-Reserve Project by Sunrin Internet High School EDCAN / IWOP / ZEROPEN
+ * Copyright by Good-Reserve Project @kotohana5706
  * All rights reversed.
  */
 
@@ -8,32 +8,41 @@ package kr.edcan.rerant.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v4.util.Pair;
+import android.util.Log;
 
-/**
- * Created by KOHA on 7/9/16.
- */
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
+
+import kr.edcan.rerant.model.FacebookUser;
+import kr.edcan.rerant.model.User;
 
 public class DataManager {
+    /* Login Type
+    * 0 Native
+    * 1: Facebook
+    * */
+
     /* Data Keys */
-    public static final String USER_PROFILE_URL = "user_profile_url";
-    public static final String IS_SILHOUETTE = "is_silhouette";
-    public static final String HAS_ACTIVE_USER = "has_active_user";
-    public static final String USER_TOKEN = "user_token";
-    public static final String USER_TOKEN_SECRET = "user_token_secret";
-    public static final String USER_NAME = "user_name";
-    public static final String USER_ID = "user_id";
-    public static final String LOGIN_TYPE = "login_type";
+    private static String HAS_ACTIVE_USER = "hasactive";
+    private static String LOGIN_TYPE = "login_type";
+    private static String USER_EMAIL = "email";
+    private static String USER_NAME = "username";
+    private static String USER_PHONE = "phone_number";
+    private static String FACEBOOK_TOKEN = "facebook_token";
+    private static String USER_AUTHTOKEN = "auth_token";
+    private static String USER_RESERVATION = "user_reservation";
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private Context context;
-    public DataManager instance;
 
-    public DataManager() {
-    }
-
-    public void initializeManager(Context c) {
+    public DataManager(Context c) {
         this.context = c;
-        preferences = context.getSharedPreferences("GoodReserve", Context.MODE_PRIVATE);
+        preferences = context.getSharedPreferences("Rerant", Context.MODE_PRIVATE);
         editor = preferences.edit();
     }
 
@@ -42,65 +51,40 @@ public class DataManager {
         editor.apply();
     }
 
-    public void saveUserCredential(String facebookToken) {
-        editor.putString(USER_TOKEN, facebookToken);
+    public void saveFacebookCredential(String facebookToken) {
+        editor.putString(FACEBOOK_TOKEN, facebookToken);
         editor.apply();
     }
 
-    public void saveUserCredential(String[] twitterToken) {
-        editor.putString(USER_TOKEN, twitterToken[0]);
-        editor.putString(USER_TOKEN_SECRET, twitterToken[1]);
+    public void saveUserInfo(User user, int loginType) {
+        editor.putInt(LOGIN_TYPE, loginType);
+        editor.putBoolean(HAS_ACTIVE_USER, true);
+        editor.putString(USER_NAME, user.getName());
+        editor.putString(USER_EMAIL, user.getEmail());
+        editor.putString(USER_PHONE, user.getPhone());
+        editor.putString(USER_AUTHTOKEN, user.getAuth_token());
+        editor.putString(USER_RESERVATION, user.getReservation());
         editor.apply();
     }
 
-//    public void saveFacebookUserInfo(FacebookUser user) {
-//        editor.putInt(LOGIN_TYPE, 0);
-//        editor.putBoolean(HAS_ACTIVE_USER, true);
-//        editor.putString(USER_ID, user.content.id);
-//        editor.putString(USER_NAME, user.content.name);
-//        editor.putString(USER_PROFILE_URL, user.content.picture.data.url);
-//        editor.putBoolean(IS_SILHOUETTE, user.content.picture.data.is_silhouette);
-//        editor.apply();
-//    }
-//
-//    public void saveTwitterUserInfo(TwitterUser user) {
-//        /* Save Twitter User Info, must refactor TwitterUser Class First */
-//        editor.putInt(LOGIN_TYPE, 1);
-//        editor.putBoolean(HAS_ACTIVE_USER, true);
-//        editor.putString(USER_ID, user.content.id);
-//        editor.putString(USER_NAME, user.content.name);
-//        editor.putBoolean(IS_SILHOUETTE, user.content.default_profile);
-//        editor.putString(USER_PROFILE_URL, user.content.profile_image_url);
-//        editor.apply();
-//    }
-//
-//    public Pair<Boolean, User> getActiveUser() {
-//        if (preferences.getBoolean(HAS_ACTIVE_USER, false)) {
-//            int userType = preferences.getInt(LOGIN_TYPE, -1);
-//            String id = preferences.getString(USER_ID, "");
-//            String name = preferences.getString(USER_NAME, "");
-//            boolean isSilhouette = preferences.getBoolean(IS_SILHOUETTE, true);
-//            String url = preferences.getString(USER_PROFILE_URL, "");
-//            Log.e("asdf", "name : " + name + "url : " + url);
-//            User user = new User(userType, name, id, isSilhouette, url);
-//            return Pair.create(true, user);
-//        } else return Pair.create(false, null);
-//    }
-//
-//    public String getFacebookUserCredential() {
-//        if (preferences.getBoolean(HAS_ACTIVE_USER, false) && preferences.getInt(LOGIN_TYPE, -1) == 0) {
-//            return preferences.getString(USER_TOKEN, "");
-//        } else return "";
-//    }
-//
-//    public String[] getTwitterUserCredentials() {
-//        if (preferences.getBoolean(HAS_ACTIVE_USER, false) && preferences.getInt(LOGIN_TYPE, -1) == 1)
-//            return new String[]{preferences.getString(USER_TOKEN, ""),
-//                    preferences.getString(USER_TOKEN_SECRET, ""),
-//                    preferences.getString(USER_ID, "")
-//            };
-//        else return new String[]{""};
-//    }
+    public Pair<Boolean, User> getActiveUser() {
+        if (preferences.getBoolean(HAS_ACTIVE_USER, false)) {
+            int userType = preferences.getInt(LOGIN_TYPE, -1);
+            String username = preferences.getString(USER_NAME, "");
+            String useremail = preferences.getString(USER_EMAIL, "");
+            String userphone = preferences.getString(USER_PHONE, "");
+            String usertoken = preferences.getString(USER_AUTHTOKEN, "");
+            String userreservation = preferences.getString(USER_RESERVATION, "");
+            User user = new User(userType, useremail, username, userphone, usertoken, userreservation);
+            return Pair.create(true, user);
+        } else return Pair.create(false, null);
+    }
+
+    public String getFacebookUserCredential() {
+        if (preferences.getBoolean(HAS_ACTIVE_USER, false) && preferences.getInt(LOGIN_TYPE, -1) == 0) {
+            return preferences.getString(FACEBOOK_TOKEN, "");
+        } else return "";
+    }
 
     public void removeAllData() {
         editor.clear();

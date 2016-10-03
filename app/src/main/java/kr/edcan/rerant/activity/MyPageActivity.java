@@ -35,6 +35,7 @@ public class MyPageActivity extends AppCompatActivity {
 
     private void initAppbarLayout() {
         setSupportActionBar(binding.toolbar);
+        binding.toolbar.setBackgroundColor(Color.WHITE);
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
         getSupportActionBar().setTitle("마이페이지");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

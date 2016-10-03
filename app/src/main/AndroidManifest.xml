@@ -26,7 +26,8 @@
         <activity android:name=".activity.ShoppingCartActivity" />
         <activity android:name=".activity.FilterSelectActivity" />
         <activity android:name=".activity.ReserveExecuteActivity" />
-        <activity android:name=".activity.ReserveCompleteActivity"></activity>
+        <activity android:name=".activity.ReserveCompleteActivity" />
+        <activity android:name=".activity.AuthActivity"></activity>
     </application>
 
 </manifest>

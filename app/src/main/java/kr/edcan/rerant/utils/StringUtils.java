@@ -13,4 +13,10 @@ public class StringUtils {
     public static boolean checkPassword(EditText password, EditText repassword){
         return password.getText().toString().trim().equals(repassword.getText().toString().trim());
     }
+    public static boolean fullFilled(EditText... e){
+        for(EditText editText : e){
+            if(editText.getText().toString().trim().equals("")) return false;
+        }
+        return true;
+    }
 }

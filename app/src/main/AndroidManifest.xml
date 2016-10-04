@@ -27,7 +27,8 @@
         <activity android:name=".activity.FilterSelectActivity" />
         <activity android:name=".activity.ReserveExecuteActivity" />
         <activity android:name=".activity.ReserveCompleteActivity" />
-        <activity android:name=".activity.AuthActivity"></activity>
+        <activity android:name=".activity.AuthActivity" />
+        <activity android:name=".activity.LoginActivity"></activity>
     </application>
 
 </manifest>

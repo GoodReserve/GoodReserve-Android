@@ -36,12 +36,14 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void checkRegister() {
-        if (!StringUtils.validEmail(binding.registerEmail)) {
-            Toast.makeText(this, "올바른 이메일 형식을 입력해주세요!", Toast.LENGTH_SHORT).show();
-        } else if(!StringUtils.checkPassword(binding.registerPassword, binding.registerRePassword)){
-            Toast.makeText(this, "비밀번호가 일치하지 않습니다!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "회원가입", Toast.LENGTH_SHORT).show();
-        }
+        if(StringUtils.fullFilled(binding.registerEmail, binding.registerName, binding.registerPassword, binding.registerPhoneInput, binding.registerRePassword)){
+            if (!StringUtils.validEmail(binding.registerEmail)) {
+                Toast.makeText(this, "올바른 이메일 형식을 입력해주세요!", Toast.LENGTH_SHORT).show();
+            } else if(!StringUtils.checkPassword(binding.registerPassword, binding.registerRePassword)){
+                Toast.makeText(this, "비밀번호가 일치하지 않습니다!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "회원가입", Toast.LENGTH_SHORT).show();
+            }
+        } else Toast.makeText(RegisterActivity.this, "빈칸 없이 입력해주세요!", Toast.LENGTH_SHORT).show();
     }
 }

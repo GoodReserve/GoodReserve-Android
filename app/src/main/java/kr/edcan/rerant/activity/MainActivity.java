@@ -24,18 +24,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startActivity(new Intent(getApplicationContext(), AuthActivity.class));
-        finish();
+//        startActivity(new Intent(getApplicationContext(), AuthActivity.class));
+//        finish();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("");
         binding.progressLoading.startAnimation();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                initUI();
-//            }
-//        }, 2000);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initUI();
+            }
+        }, 600);
     }
     private void initUI(){
         getSupportActionBar().setTitle("GoodReserve");

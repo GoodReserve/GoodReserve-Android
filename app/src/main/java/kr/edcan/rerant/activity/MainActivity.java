@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        startActivity(new Intent(getApplicationContext(), AuthActivity.class));
+        startActivity(new Intent(getApplicationContext(), FilterSelectActivity.class));
 //        finish();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolbar);

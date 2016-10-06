@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         binding.mainRecycler.setVisibility(View.VISIBLE);
         binding.progressLoading.setVisibility(View.GONE);
         binding.toolbar.setTitleTextColor(Color.WHITE);
+        binding.mainRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         LastAdapter.with(arrayList, BR.item)
                 .layoutHandler(this)
                 .map(MainTopHeader.class, R.layout.main_first_header)
@@ -86,17 +87,6 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     public void onBind(@NotNull Object o, @NotNull View view, int type, int position) {
         switch (type) {
             case R.layout.main_first_header:
-                break;
-            case R.layout.main_recycler_header:
-                MainRecyclerHeaderBinding headerBinding= DataBindingUtil.getBinding(view);
-                MainHeader header = (MainHeader) o;
-                headerBinding.mainHeaderText.setText(header.getTitle());
-                headerBinding.mainHeaderSubText.setText(header.getContent());
-                break;
-            case R.layout.main_recycler_content:
-                MainRecyclerContentBinding recyclerBinding = DataBindingUtil.getBinding(view);
-                MainContent content = (MainContent) o;
-                recyclerBinding.mainContentCode.setText(content.getCode());
                 break;
         }
     }

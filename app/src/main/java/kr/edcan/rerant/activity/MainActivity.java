@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     ArrayList<Object> mainContentList;
     ArrayList<Restaurant> headerList;
     ArrayList<RoundImageView> indicatorArr;
+    PagerAdapterClass pageAdapter;
+    Handler viewPagerHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,10 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         headerList = new ArrayList<>();
         headerList.add(new Restaurant("1", "미스터 피자 어쩌고 저쩌고", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
         headerList.add(new Restaurant("2", "창림식 스웩 어쩌고 저꺼", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
+        headerList.add(new Restaurant("2", "창림식 스웩 어쩌고 저꺼", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
+        headerList.add(new Restaurant("2", "창림식 스웩 어쩌고 저꺼", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
+        headerList.add(new Restaurant("2", "창림식 스웩 어쩌고 저꺼", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
+        pageAdapter = new PagerAdapterClass(getApplicationContext());
     }
 
     private void initUI() {
@@ -127,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     }
 
     private void setViewPagerScroll(final ViewPager pager) {
-        new Handler().postDelayed(new Runnable() {
+        viewPagerHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 pager.setCurrentItem((pager.getCurrentItem() + 1 < headerList.size()) ? pager.getCurrentItem() + 1 : 0, true);
@@ -168,10 +174,12 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         switch (type) {
             case R.layout.main_first_header:
                 MainFirstHeaderBinding binding = DataBindingUtil.getBinding(view);
-                binding.viewPager.setAdapter(new PagerAdapterClass(getApplicationContext()));
-                setViewPagerScroll(binding.viewPager);
-                setViewPagerIndicator(binding.indicatorParent);
-                binding.viewPager.addOnPageChangeListener(pageListener);
+                if (binding.viewPager.getAdapter() == null) {
+                    binding.viewPager.setAdapter(pageAdapter);
+                    setViewPagerScroll(binding.viewPager);
+                    setViewPagerIndicator(binding.indicatorParent);
+                    binding.viewPager.addOnPageChangeListener(pageListener);
+                }
                 break;
         }
     }

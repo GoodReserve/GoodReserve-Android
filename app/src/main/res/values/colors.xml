@@ -8,4 +8,5 @@
     <color name="facebookSelectedColor">#456FBE</color>
     <color name="textColorSub">#55000000</color>
     <color name="textColor">#99000000</color>
+    <color name="dividerColor">#44FFFFFF</color>
 </resources>

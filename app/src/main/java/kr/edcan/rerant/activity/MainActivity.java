@@ -44,6 +44,7 @@ import kr.edcan.rerant.model.Restaurant;
 
 public class MainActivity extends AppCompatActivity implements LastAdapter.OnClickListener, LastAdapter.OnBindListener, LastAdapter.LayoutHandler {
 
+    final static int PAGER_SCROLL_DELAY = 3000;
     ActivityMainBinding binding;
     ArrayList<Object> mainContentList;
     ArrayList<Restaurant> headerList;
@@ -119,6 +120,16 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
                 .into(binding.mainRecycler);
     }
 
+    private void setViewPagerScroll(final ViewPager pager) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                pager.setCurrentItem((pager.getCurrentItem() + 1 < headerList.size()) ? pager.getCurrentItem() + 1 : 0, true);
+                setViewPagerScroll(pager);
+            }
+        }, PAGER_SCROLL_DELAY);
+    }
+
     @Override
     public void onClick(@NotNull Object o, @NotNull View view, int i, int i1) {
 
@@ -130,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
             case R.layout.main_first_header:
                 MainFirstHeaderBinding binding = DataBindingUtil.getBinding(view);
                 binding.viewPager.setAdapter(new PagerAdapterClass(getApplicationContext()));
+                setViewPagerScroll(binding.viewPager);
                 break;
         }
     }
@@ -198,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.main_menu_mypage:
                 startActivity(new Intent(getApplicationContext(), MyPageActivity.class));
                 break;

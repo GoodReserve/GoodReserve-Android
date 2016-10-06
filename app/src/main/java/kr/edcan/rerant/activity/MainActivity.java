@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         getSupportActionBar().setTitle("Rerant");
         binding.mainRecycler.setVisibility(View.VISIBLE);
         binding.progressLoading.setVisibility(View.GONE);
-        binding.toolbar.setTitleTextColor(Color.WHITE);
+        binding.toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
         binding.mainRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         LastAdapter.with(mainContentList, BR.item)
                 .layoutHandler(this)

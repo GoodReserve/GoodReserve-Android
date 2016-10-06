@@ -17,8 +17,8 @@
             android:layout_height="220dp"
             android:orientation="vertical"
             app:cardBackgroundColor="@android:color/white"
-            app:cardUseCompatPadding="true"
-            app:cardElevation="8dp">
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -103,7 +103,10 @@
                             android:id="@+id/mainContentDetailExecute"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="12dp"
+                            android:paddingBottom="16dp"
+                            android:paddingLeft="12dp"
+                            android:paddingRight="12dp"
+                            android:paddingTop="16dp"
                             android:text="자세히"
                             android:textColor="@color/textColorSub"
                             android:textSize="13sp"
@@ -113,7 +116,10 @@
                             android:id="@+id/mainContentAlertExecute"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="12dp"
+                            android:paddingBottom="16dp"
+                            android:paddingLeft="12dp"
+                            android:paddingRight="12dp"
+                            android:paddingTop="16dp"
                             android:text="알리기"
                             android:textColor="@color/colorPrimary"
                             android:textSize="13sp"

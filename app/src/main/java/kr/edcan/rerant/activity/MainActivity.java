@@ -7,14 +7,20 @@
 package kr.edcan.rerant.activity;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Handler;
+import android.os.Parcelable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.github.nitrico.lastadapter.BR;
 import com.github.nitrico.lastadapter.LastAdapter;
@@ -25,6 +31,7 @@ import java.util.ArrayList;
 
 import kr.edcan.rerant.R;
 import kr.edcan.rerant.databinding.ActivityMainBinding;
+import kr.edcan.rerant.databinding.MainHeaderViewpagerLayoutBinding;
 import kr.edcan.rerant.databinding.MainRecyclerContentBinding;
 import kr.edcan.rerant.databinding.MainRecyclerHeaderBinding;
 import kr.edcan.rerant.model.MainContent;
@@ -75,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
                 .map(MainContent.class, R.layout.main_recycler_content)
                 .onClickListener(this)
                 .onBindListener(this)
-                .into(binding.mainRecycler);
+                .into(binding.mainRecycler);a
     }
 
     @Override
@@ -96,5 +103,57 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         if (item instanceof MainHeader) return R.layout.main_recycler_header;
         else if(item instanceof MainTopHeader) return R.layout.main_first_header;
         else return R.layout.main_recycler_content;
+    }
+    /**
+     * PagerAdapter
+     */
+    private class PagerAdapterClass extends PagerAdapter {
+        private LayoutInflater mInflater;
+        int score = 0;
+
+        public PagerAdapterClass(Context c) {
+            super();
+            mInflater = LayoutInflater.from(c);
+
+        }
+
+
+        @Override
+        public int getCount() {
+            return 10;
+        }
+
+        @Override
+        public Object instantiateItem(final ViewGroup container, int position) {
+            MainHeaderViewpagerLayoutBinding binding = DataBindingUtil.getBinding(container);
+            return binding.getRoot();
+        }
+
+        @Override
+        public void destroyItem(View pager, int position, Object view) {
+            ((ViewPager) pager).removeView((View) view);
+        }
+
+        @Override
+        public boolean isViewFromObject(View pager, Object obj) {
+            return pager == obj;
+        }
+
+        @Override
+        public void restoreState(Parcelable arg0, ClassLoader arg1) {
+        }
+
+        @Override
+        public Parcelable saveState() {
+            return null;
+        }
+
+        @Override
+        public void startUpdate(View arg0) {
+        }
+
+        @Override
+        public void finishUpdate(View arg0) {
+        }
     }
 }

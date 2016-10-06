@@ -10,7 +10,8 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:elevation="0dp">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -19,23 +20,23 @@
         </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
-            android:background="#FFF"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#FFF">
 
             <com.github.rahatarmanahmed.cpv.CircularProgressView
                 android:id="@+id/progressLoading"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:cpv_indeterminate="true"
                 android:layout_gravity="center"
                 app:cpv_color="@color/colorPrimary"
+                app:cpv_indeterminate="true"
                 app:cpv_thickness="5dp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/mainRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
         </FrameLayout>
     </LinearLayout>
 </layout>

@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -18,12 +19,15 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.github.nitrico.lastadapter.BR;
 import com.github.nitrico.lastadapter.LastAdapter;
@@ -40,6 +44,7 @@ import kr.edcan.rerant.model.MainContent;
 import kr.edcan.rerant.model.MainHeader;
 import kr.edcan.rerant.model.MainTopHeader;
 import kr.edcan.rerant.model.Restaurant;
+import kr.edcan.rerant.views.RoundImageView;
 
 
 public class MainActivity extends AppCompatActivity implements LastAdapter.OnClickListener, LastAdapter.OnBindListener, LastAdapter.LayoutHandler {
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     ActivityMainBinding binding;
     ArrayList<Object> mainContentList;
     ArrayList<Restaurant> headerList;
+    ArrayList<RoundImageView> indicatorArr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +136,28 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         }, PAGER_SCROLL_DELAY);
     }
 
+    private void setViewPagerIndicator(LinearLayout parent) {
+        indicatorArr = new ArrayList<>();
+        int pixels = getResources().getDimensionPixelSize(R.dimen.indicator_width);
+        LinearLayout.LayoutParams indicatorParams = new LinearLayout.LayoutParams(pixels, pixels);
+        indicatorParams.setMargins(pixels / 2, 0, 0, 0);
+        for (int i = 0; i < headerList.size(); i++) {
+            RoundImageView view = new RoundImageView(getApplicationContext());
+            view.setLayoutParams(indicatorParams);
+            view.setImageDrawable(new ColorDrawable(Color.WHITE));
+            parent.addView(view);
+            indicatorArr.add(view);
+        }
+        updateViewPagerIndicator(0);
+    }
+
+    private void updateViewPagerIndicator(int currentItem) {
+        for (int i = 0; i < indicatorArr.size(); i++) {
+            if (i == currentItem) indicatorArr.get(i).setImageResource(R.color.indicatorPrimary);
+            else indicatorArr.get(i).setImageResource(R.color.indicatorSub);
+        }
+    }
+
     @Override
     public void onClick(@NotNull Object o, @NotNull View view, int i, int i1) {
 
@@ -142,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
                 MainFirstHeaderBinding binding = DataBindingUtil.getBinding(view);
                 binding.viewPager.setAdapter(new PagerAdapterClass(getApplicationContext()));
                 setViewPagerScroll(binding.viewPager);
+                setViewPagerIndicator(binding.indicatorParent);
+                binding.viewPager.addOnPageChangeListener(pageListener);
                 break;
         }
     }
@@ -223,4 +253,20 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    ViewPager.OnPageChangeListener pageListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            updateViewPagerIndicator(position);
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+        }
+    };
 }

@@ -32,15 +32,10 @@
                 app:cpv_color="@color/colorPrimary"
                 app:cpv_thickness="5dp" />
 
-            <TextView
-                android:id="@+id/progressComplete"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mainRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="LOAD COMPLETE"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                android:visibility="gone" />
+                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
         </FrameLayout>
     </LinearLayout>
 </layout>

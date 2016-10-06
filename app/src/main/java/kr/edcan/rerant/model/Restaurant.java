@@ -13,6 +13,12 @@ public class Restaurant {
     private int reservation_max, reservation_current, reservation_cancel, reservation_check;
     private ArrayList<Menu> menu;
 
+    public Restaurant(String _id, String name, String address) {
+        this._id = _id;
+        this.name = name;
+        this.address = address;
+    }
+
     public Restaurant(String _id, String name, String address, String phone, ArrayList<String> category, int reservation_max, int reservation_current, int reservation_cancel, int reservation_check, ArrayList<Menu> menu) {
         this._id = _id;
         this.name = name;

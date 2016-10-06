@@ -1,4 +1,9 @@
 <layout>
+    <data>
+        <variable
+            name="data"
+            type="kr.edcan.rerant.model.MainHeader" />
+    </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,7 +16,7 @@
             android:id="@+id/mainHeaderText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="곧 예약시간에 도달"
+            android:text="@{data.title}"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -21,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="아래의 음식점에 예약한 시간이 얼마 남지 않았습니다."
+            android:text="@{data.content}"
             android:textColor="@color/textColor"
             android:textSize="12sp" />
 

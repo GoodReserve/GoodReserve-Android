@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("");
+        binding.toolbar.setBackgroundColor(Color.WHITE);
         binding.progressLoading.startAnimation();
         setData();
         new Handler().postDelayed(new Runnable() {
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     }
 
     private void initUI() {
-        getSupportActionBar().setTitle("GoodReserve");
+        getSupportActionBar().setTitle("Rerant");
         binding.mainRecycler.setVisibility(View.VISIBLE);
         binding.progressLoading.setVisibility(View.GONE);
         binding.toolbar.setTitleTextColor(Color.WHITE);

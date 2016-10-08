@@ -3,33 +3,99 @@
   ~ Copyright by Good-Reserve Project @kotohana5706
   ~ All rights reversed.
   -->
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/activity_filter_select"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FDFDFD"
-        android:orientation="vertical"
         tools:context="kr.edcan.rerant.activity.FilterSelectActivity">
 
-        <android.support.design.widget.AppBarLayout
+        <LinearLayout
+            android:layout_marginBottom="60dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFF"
-                android:theme="@style/AppTheme.ActionBar"
-                app:titleTextColor="@color/colorPrimary" />
-        </android.support.design.widget.AppBarLayout>
+                android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/shoppingRecyclerView"
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFF"
+                    android:theme="@style/AppTheme.ActionBar"
+                    app:titleTextColor="@color/colorPrimary" />
+            </android.support.design.widget.AppBarLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/shoppingRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp" />
+        </LinearLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:paddingTop="10dp"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+
+                <kr.edcan.rerant.views.CartaTagView
+                    android:id="@+id/cartaTagView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_btn_bottom_delete"
+                    android:drawablePadding="10dp"
+                    android:maxLines="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:paddingTop="10dp"
+                    android:text="삭제하기"
+                    app:fullMode="false"
+                    app:themeColor="@android:color/white" />
+
+                <kr.edcan.rerant.views.CartaTagView
+                    android:id="@+id/cartaTagView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_btn_bottom_reserve"
+                    android:drawablePadding="10dp"
+                    android:maxLines="1"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:paddingTop="10dp"
+                    android:text="예약하기"
+                    app:elevation="5dp"
+                    app:fullMode="true"
+                    app:textThemeColor="@color/colorPrimary"
+                    app:textThemeColorEnabled="true"
+                    app:themeColor="@android:color/white" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 </layout>

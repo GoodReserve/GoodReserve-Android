@@ -13,6 +13,12 @@ public class Restaurant {
     private int reservation_max, reservation_current, reservation_cancel, reservation_check;
     private ArrayList<Menu> menu;
 
+    public Restaurant(String name, String thumbnail, String address) {
+        this.name = name;
+        this.thumbnail = thumbnail;
+        this.address = address;
+    }
+
     public Restaurant(String _id, String name, String thumbnail, String address, String phone, ArrayList<String> category, int reservation_max, int reservation_current, int reservation_cancel, int reservation_check, ArrayList<Menu> menu) {
         this._id = _id;
         this.name = name;
@@ -80,61 +86,5 @@ public class Restaurant {
         return menu;
     }
 
-    public class Menu {
-        private String _id;
-        private String restaurant, name, thumbnail;
-        private int price;
 
-        public Menu(String _id, String restaurant, String name, String thumbnail, int price) {
-            this._id = _id;
-            this.restaurant = restaurant;
-            this.name = name;
-            this.thumbnail = thumbnail;
-            this.price = price;
-        }
-
-        public String get_id() {
-            return _id;
-        }
-
-        public String getRestaurant() {
-            return restaurant;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getThumbnail() {
-            return thumbnail;
-        }
-
-        public int getPrice() {
-            return price;
-        }
-    }
-
-    public class Benefit {
-        private String main_benefit, sub_benefit;
-        private String _id;
-
-        public String getMain_benefit() {
-            return main_benefit;
-        }
-
-        public String getSub_benefit() {
-            return sub_benefit;
-        }
-
-        public String get_id() {
-            return _id;
-        }
-
-        public Benefit(String main_benefit, String sub_benefit, String _id) {
-            this.main_benefit = main_benefit;
-            this.sub_benefit = sub_benefit;
-            this._id = _id;
-
-        }
-    }
 }

@@ -6,9 +6,14 @@ package kr.edcan.rerant.model;
 public class Menu {
     private String _id;
     private String restaurant, name, thumbnail;
-    private int price;
+    private String price;
 
-    public Menu(String _id, String restaurant, String name, String thumbnail, int price) {
+    public Menu(String name, String price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public Menu(String _id, String restaurant, String name, String thumbnail, String price) {
         this._id = _id;
         this.restaurant = restaurant;
         this.name = name;
@@ -32,7 +37,7 @@ public class Menu {
         return thumbnail;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 }

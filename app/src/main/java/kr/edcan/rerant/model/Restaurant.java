@@ -8,20 +8,15 @@ import java.util.ArrayList;
 
 public class Restaurant {
     private String _id;
-    private String name, address, phone;
+    private String name, thumbnail, address, phone;
     private ArrayList<String> category;
     private int reservation_max, reservation_current, reservation_cancel, reservation_check;
     private ArrayList<Menu> menu;
 
-    public Restaurant(String _id, String name, String address) {
+    public Restaurant(String _id, String name, String thumbnail, String address, String phone, ArrayList<String> category, int reservation_max, int reservation_current, int reservation_cancel, int reservation_check, ArrayList<Menu> menu) {
         this._id = _id;
         this.name = name;
-        this.address = address;
-    }
-
-    public Restaurant(String _id, String name, String address, String phone, ArrayList<String> category, int reservation_max, int reservation_current, int reservation_cancel, int reservation_check, ArrayList<Menu> menu) {
-        this._id = _id;
-        this.name = name;
+        this.thumbnail = thumbnail;
         this.address = address;
         this.phone = phone;
         this.category = category;
@@ -32,12 +27,25 @@ public class Restaurant {
         this.menu = menu;
     }
 
+
+    public Restaurant(String _id, String name, String thumbnail, String address, String phone) {
+        this._id = _id;
+        this.name = name;
+        this.thumbnail = thumbnail;
+        this.address = address;
+        this.phone = phone;
+    }
+
     public String get_id() {
         return _id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
     }
 
     public String getAddress() {
@@ -74,12 +82,14 @@ public class Restaurant {
 
     public class Menu {
         private String _id;
-        private String name;
+        private String restaurant, name, thumbnail;
         private int price;
 
-        public Menu(String _id, String name, int price) {
+        public Menu(String _id, String restaurant, String name, String thumbnail, int price) {
             this._id = _id;
+            this.restaurant = restaurant;
             this.name = name;
+            this.thumbnail = thumbnail;
             this.price = price;
         }
 
@@ -87,8 +97,16 @@ public class Restaurant {
             return _id;
         }
 
+        public String getRestaurant() {
+            return restaurant;
+        }
+
         public String getName() {
             return name;
+        }
+
+        public String getThumbnail() {
+            return thumbnail;
         }
 
         public int getPrice() {
@@ -100,12 +118,6 @@ public class Restaurant {
         private String main_benefit, sub_benefit;
         private String _id;
 
-        public Benefit(String main_benefit, String sub_benefit, String _id) {
-            this.main_benefit = main_benefit;
-            this.sub_benefit = sub_benefit;
-            this._id = _id;
-        }
-
         public String getMain_benefit() {
             return main_benefit;
         }
@@ -116,6 +128,13 @@ public class Restaurant {
 
         public String get_id() {
             return _id;
+        }
+
+        public Benefit(String main_benefit, String sub_benefit, String _id) {
+            this.main_benefit = main_benefit;
+            this.sub_benefit = sub_benefit;
+            this._id = _id;
+
         }
     }
 }

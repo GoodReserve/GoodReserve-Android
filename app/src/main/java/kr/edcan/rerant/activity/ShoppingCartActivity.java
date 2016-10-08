@@ -8,8 +8,8 @@ package kr.edcan.rerant.activity;
 
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,15 +23,14 @@ import java.util.ArrayList;
 
 import kr.edcan.rerant.R;
 import kr.edcan.rerant.databinding.ActivityShoppingCartBinding;
-import kr.edcan.rerant.model.MainHeader;
-import kr.edcan.rerant.model.MainTopHeader;
+import kr.edcan.rerant.databinding.ShoppingcartRecyclerFooterBinding;
 import kr.edcan.rerant.model.Menu;
-import kr.edcan.rerant.model.Restaurant;
+import kr.edcan.rerant.model.ReserveFooter;
 
 public class ShoppingCartActivity extends AppCompatActivity implements LastAdapter.LayoutHandler, LastAdapter.OnBindListener, LastAdapter.OnClickListener {
 
 
-    ArrayList<Menu> arrayList;
+    ArrayList<Object> arrayList;
     ActivityShoppingCartBinding binding;
 
     @Override
@@ -49,9 +48,11 @@ public class ShoppingCartActivity extends AppCompatActivity implements LastAdapt
         arrayList.add(new Menu("한글로 드 스테이크", "10000"));
         arrayList.add(new Menu("한글로 드 스테이크", "10000"));
         arrayList.add(new Menu("한글로 드 스테이크", "10000"));
+        arrayList.add(new ReserveFooter());
         LastAdapter.with(arrayList, BR.item)
                 .layoutHandler(this)
                 .map(Menu.class, R.layout.shoppingcart_recycler_content)
+                .map(ReserveFooter.class, R.layout.shoppingcart_recycler_footer)
                 .onBindListener(this)
                 .onClickListener(this)
                 .into(binding.shoppingRecyclerView);
@@ -78,13 +79,18 @@ public class ShoppingCartActivity extends AppCompatActivity implements LastAdapt
     @Override
     public int getItemLayout(@NotNull Object item, int i) {
         if (item instanceof Menu) return R.layout.shoppingcart_recycler_content;
-//        else return R.layout.main_recycler_content;
-        return 0;
+        else return R.layout.shoppingcart_recycler_footer;
     }
 
     @Override
-    public void onBind(@NotNull Object o, @NotNull View view, int i, int i1) {
-
+    public void onBind(@NotNull Object o, @NotNull View view, int type, int position) {
+        switch (type) {
+            case R.layout.shoppingcart_recycler_footer:
+                ShoppingcartRecyclerFooterBinding binding = DataBindingUtil.getBinding(view);
+                binding.shoppingList.setText("asdf 외 2건");
+                binding.shoppingMoney.setText(100000000 + "원");
+                break;
+        }
     }
 
     @Override

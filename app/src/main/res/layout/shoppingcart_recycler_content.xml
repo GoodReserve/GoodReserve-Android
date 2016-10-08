@@ -4,7 +4,7 @@
 
         <variable
             name="item"
-            type="kr.edcan.rerant.model.Restaurant.Menu" />
+            type="kr.edcan.rerant.model.Menu" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -52,7 +52,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:singleLine="true"
-                            android:text="한글로 드 스테이크"
+                            android:text="@{item.name}"
                             android:textColor="@color/white"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -61,7 +61,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:singleLine="true"
-                            android:text="한글로 드 스테이크"
+                            android:text="@{item.price}"
                             android:textColor="@color/white"
                             android:textSize="11sp" />
                     </LinearLayout>
@@ -114,14 +114,14 @@
                             android:layout_width="1dp"
                             android:layout_height="20dp"
                             android:layout_centerVertical="true"
-                            android:layout_toRightOf="@id/itemPlus"
+                            android:layout_toRightOf="@+id/itemPlus"
                             android:background="#33000000" />
 
                         <View
                             android:layout_width="1dp"
                             android:layout_height="20dp"
                             android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@id/itemMinus"
+                            android:layout_toLeftOf="@+id/itemMinus"
                             android:background="#33000000" />
 
                         <ImageView
@@ -161,11 +161,11 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/itemTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:singleLine="true"
-                        android:text="81240원"
                         android:layout_marginTop="10dp"
                         android:textColor="@color/textColor"
                         android:textSize="25sp"/>

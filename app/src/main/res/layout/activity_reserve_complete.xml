@@ -21,7 +21,8 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.ActionBar" />
         </android.support.design.widget.AppBarLayout>
 
         <RelativeLayout
@@ -46,7 +47,7 @@
                         app:cardBackgroundColor="@color/colorPrimary"
                         app:cardCornerRadius="2dp"
                         app:cardUseCompatPadding="true"
-                        app:elevation="8dp">
+                        app:cardElevation="5dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -102,7 +103,7 @@
                         app:cardBackgroundColor="#FFFFFF"
                         app:cardCornerRadius="2dp"
                         app:cardUseCompatPadding="true"
-                        app:elevation="8dp">
+                        app:cardElevation="5dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"

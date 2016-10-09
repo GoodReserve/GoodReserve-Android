@@ -47,11 +47,13 @@
                             android:src="@drawable/ic_actionbar_reservesearch_sort" />
 
                         <Spinner
+                            android:id="@+id/searchFilterSpinner"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
                     </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/searchFilterSelect"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
@@ -66,6 +68,8 @@
 
                     <!-- Must Contain Tag Layout -->
                     <LinearLayout
+                        android:id="@+id/searchTagParent"
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -74,7 +78,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:drawableRight="@drawable/btn_basket_delete"
+                            android:drawablePadding="5dp"
+                            android:drawableRight="@drawable/btn_filter_delete"
                             android:padding="10dp"
                             android:text="ㅁㄴㅇㄻㄴㅇㄹㄴ"
                             android:textColor="#FFFFFF"

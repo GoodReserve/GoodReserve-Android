@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 import kr.edcan.rerant.R;
 import kr.edcan.rerant.databinding.ActivityReserveSearchBinding;
@@ -25,6 +26,15 @@ public class ReserveSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reserve_search);
         initAppbarLayout();
+        setDefault();
+
+    }
+
+    private void setDefault() {
+        String[] items = new String[]{"등록일 순", "예약자 비율 순", "예약 만료일 순"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.row_spn, items);
+        adapter.setDropDownViewResource(R.layout.row_spn_dropdown);
+        binding.searchFilterSpinner.setAdapter(adapter);
     }
 
     private void initAppbarLayout() {

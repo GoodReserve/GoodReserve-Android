@@ -75,13 +75,27 @@
                         android:orientation="horizontal">
 
                         <kr.edcan.rerant.views.CartaTagView
+                            android:id="@+id/menuType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
                             android:drawablePadding="5dp"
                             android:drawableRight="@drawable/btn_filter_delete"
                             android:padding="10dp"
-                            android:text="ㅁㄴㅇㄻㄴㅇㄹㄴ"
+                            android:textColor="#FFFFFF"
+                            app:fullMode="true"
+                            app:textThemeColor="#000"
+                            app:textThemeColorEnabled="true"
+                            app:themeColor="#FFF" />
+
+                        <kr.edcan.rerant.views.CartaTagView
+                            android:id="@+id/meetingType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawablePadding="5dp"
+                            android:drawableRight="@drawable/btn_filter_delete"
+                            android:padding="10dp"
                             android:textColor="#FFFFFF"
                             app:fullMode="true"
                             app:textThemeColor="#000"
@@ -96,7 +110,7 @@
             android:id="@+id/reserveSearchRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

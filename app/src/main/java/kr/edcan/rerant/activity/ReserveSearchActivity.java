@@ -6,6 +6,7 @@
 
 package kr.edcan.rerant.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -36,9 +37,13 @@ import kr.edcan.rerant.views.CartaTagView;
 
 public class ReserveSearchActivity extends AppCompatActivity implements LastAdapter.LayoutHandler, LastAdapter.OnBindListener {
 
+
+    private static final int FILTER_INTENT_CODE = 6974;
     ActivityReserveSearchBinding binding;
     ArrayList<Restaurant> arrayList = new ArrayList<>();
     int colorPrimary, colorSub;
+    String menu[] = {"한식", "양식", "중식", "일식"};
+    String meeting[] = {"회식", "회의", "커플", "가족"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,12 @@ public class ReserveSearchActivity extends AppCompatActivity implements LastAdap
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.row_spn, items);
         adapter.setDropDownViewResource(R.layout.row_spn_dropdown);
         binding.searchFilterSpinner.setAdapter(adapter);
+        binding.searchFilterSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(getApplicationContext(), FilterSelectActivity.class), FILTER_INTENT_CODE);
+            }
+        });
     }
 
     private void initAppbarLayout() {
@@ -87,6 +98,23 @@ public class ReserveSearchActivity extends AppCompatActivity implements LastAdap
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case FILTER_INTENT_CODE:
+                if (resultCode == RESULT_OK) {
+                    setFilter(data.getIntExtra("menuType", 0)
+                            , data.getIntExtra("meetingType", 0));
+                }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void setFilter(int menuType, int meetingType) {
+        binding.menuType.setText(menu[menuType]);
+        binding.meetingType.setText(meeting[meetingType]);
     }
 
     @Override

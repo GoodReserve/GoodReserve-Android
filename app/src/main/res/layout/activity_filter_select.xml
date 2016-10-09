@@ -57,6 +57,7 @@
         </LinearLayout>
 
         <RadioGroup
+            android:id="@+id/menuTypeGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -129,6 +130,7 @@
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/meetingTypeGroup"
             android:layout_margin="16dp"
             android:orientation="horizontal">
 
@@ -170,5 +172,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:background="#DEDEDE" />
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </layout>

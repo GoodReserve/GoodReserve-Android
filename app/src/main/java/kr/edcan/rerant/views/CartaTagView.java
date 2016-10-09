@@ -109,5 +109,10 @@ public class CartaTagView extends TextView {
         this.color = Color.parseColor(colorStr);
         requestLayout();
     }
+    public void setTextColorForceFully(int color){
+        this.textColorEnabled = true;
+        this.textColor = color;
+        requestLayout();
+    }
 
 }

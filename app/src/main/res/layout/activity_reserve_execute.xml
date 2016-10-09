@@ -92,7 +92,8 @@
                         app:sl_minValue="0"
                         app:sl_primaryColor="@color/colorPrimary"
                         app:sl_secondaryColor="@color/textColorSub"
-                        app:sl_trackCap="butt" />
+                        app:sl_trackCap="butt"
+                        app:sl_value="1" />
 
                     <View
                         android:layout_width="match_parent"
@@ -168,7 +169,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:background="@drawable/round_2dp_login_background"
+                                android:background="@drawable/round_2dp_share_background"
                                 android:gravity="center"
                                 android:paddingBottom="5dp"
                                 android:paddingLeft="20dp"
@@ -221,7 +222,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             app:cardBackgroundColor="@color/colorPrimary"
-                            app:cardCornerRadius="2dp"
+                            app:cardCornerRadius="5dp"
                             app:cardElevation="5dp"
                             app:cardUseCompatPadding="true">
 
@@ -265,7 +266,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             app:cardBackgroundColor="@color/colorPrimary"
-                            app:cardCornerRadius="2dp"
+                            app:cardCornerRadius="5dp"
                             app:cardElevation="5dp"
                             app:cardUseCompatPadding="true">
 

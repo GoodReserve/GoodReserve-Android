@@ -105,9 +105,10 @@ public class ReserveSearchActivity extends AppCompatActivity implements LastAdap
         switch (requestCode) {
             case FILTER_INTENT_CODE:
                 if (resultCode == RESULT_OK) {
+                    binding.searchTagParent.setVisibility(View.VISIBLE);
                     setFilter(data.getIntExtra("menuType", 0)
                             , data.getIntExtra("meetingType", 0));
-                }
+                } else binding.searchTagParent.setVisibility(View.GONE);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

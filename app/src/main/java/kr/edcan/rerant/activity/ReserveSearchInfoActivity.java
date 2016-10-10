@@ -7,9 +7,11 @@
 package kr.edcan.rerant.activity;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -24,10 +26,11 @@ import kr.edcan.rerant.databinding.ActivityReserveSearchInfoBinding;
 
 import com.github.nitrico.lastadapter.BR;
 
+import kr.edcan.rerant.databinding.CommonListviewContentBinding;
 import kr.edcan.rerant.model.CommonListData;
 
 
-public class ReserveSearchInfoActivity extends AppCompatActivity implements LastAdapter.LayoutHandler, LastAdapter.OnBindListener {
+public class ReserveSearchInfoActivity extends AppCompatActivity implements LastAdapter.LayoutHandler, LastAdapter.OnBindListener, LastAdapter.OnClickListener {
 
     ArrayList<Object> arrayList;
     ActivityReserveSearchInfoBinding binding;
@@ -50,10 +53,10 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
     private void setDefault() {
         binding.reserveInfoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         arrayList = new ArrayList<>();
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
+        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.ic_reservesebu_reservestatus));
+        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.ic_reservesebu_reservecancel));
+        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.ic_reservesebu_call));
+        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.ic_reservesebu_location));
         arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
         arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
         arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
@@ -67,6 +70,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
                 .map(CommonListData.class, R.layout.common_listview_content)
                 .layoutHandler(this)
                 .onBindListener(this)
+                .onClickListener(this)
                 .into(binding.reserveInfoRecyclerView);
     }
 
@@ -79,7 +83,10 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
     public void onBind(@NotNull Object o, @NotNull View view, int type, int pos) {
         switch (type) {
             case R.layout.common_listview_content:
-
+                CommonListviewContentBinding binding = DataBindingUtil.getBinding(view);
+                binding.commonListViewIcon.setVisibility(View.VISIBLE);
+                binding.commonListViewIcon.setImageResource(((CommonListData) arrayList.get(pos)).getIcon());
+                binding.commonListViewTitle.setTextColor(Color.BLACK);
                 break;
         }
     }
@@ -91,5 +98,10 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
                 finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(@NotNull Object o, @NotNull View view, int type, int position) {
+        Log.e("asdf", "asdf" + position);
     }
 }

@@ -3,7 +3,7 @@
   ~ Copyright by Good-Reserve Project @kotohana5706
   ~ All rights reversed.
   -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"

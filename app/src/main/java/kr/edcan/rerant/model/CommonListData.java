@@ -6,10 +6,17 @@ package kr.edcan.rerant.model;
 
 public class CommonListData {
     private String title, content;
+    private int icon;
 
     public CommonListData(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public CommonListData(String title, String content, int icon) {
+        this.title = title;
+        this.content = content;
+        this.icon = icon;
     }
 
     public String getTitle() {
@@ -18,5 +25,9 @@ public class CommonListData {
 
     public String getContent() {
         return content;
+    }
+
+    public int getIcon() {
+        return icon;
     }
 }

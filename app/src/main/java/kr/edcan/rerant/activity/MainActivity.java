@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startActivity(new Intent(getApplicationContext(), ShoppingCartActivity.class));
+        startActivity(new Intent(getApplicationContext(), ReserveSearchActivity.class));
 //        finish();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolbar);
@@ -108,11 +108,11 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
 
         headerList = new ArrayList<>();
-        headerList.add(new Restaurant("1", "미스터 피자 어쩌고 저쩌고", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        headerList.add(new Restaurant("2", "창림식 스웩 어쩌고 저꺼", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        headerList.add(new Restaurant("2", "창림식 스웩 어쩌고 저꺼", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        headerList.add(new Restaurant("2", "창림식 스웩 어쩌고 저꺼", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        headerList.add(new Restaurant("2", "창림식 스웩 어쩌고 저꺼", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
+        headerList.add(new Restaurant("미스터 피자 어쩌고 저쩌고", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
+        headerList.add(new Restaurant("창림식 스웩 어쩌고 저꺼", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
+        headerList.add(new Restaurant("창림식 스웩 어쩌고 저꺼", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
+        headerList.add(new Restaurant("창림식 스웩 어쩌고 저꺼", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
+        headerList.add(new Restaurant("창림식 스웩 어쩌고 저꺼", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
         pageAdapter = new PagerAdapterClass(getApplicationContext());
     }
 

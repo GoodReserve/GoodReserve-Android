@@ -69,6 +69,10 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
         arrayList.add(new CommonListData("asdf", "asdf", R.drawable.ic_reservesebu_call));
         arrayList.add(new CommonListData("asdf", "asdf", R.drawable.ic_reservesebu_location));
         arrayList.add(new MainHeader("메뉴", "식사할 메뉴를 선택해 주세요."));
+        arrayList.add(new ReserveMenu("", "한글로 드 스테이크", 40620));
+        arrayList.add(new ReserveMenu("", "한글로 드 스테이크", 40620));
+        arrayList.add(new ReserveMenu("", "한글로 드 스테이크", 40620));
+        arrayList.add(new ReserveMenu("", "한글로 드 스테이크", 40620));
 
         LastAdapter.with(arrayList, BR.item)
                 .map(CommonListData.class, R.layout.common_listview_content)
@@ -83,9 +87,10 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
     public int getItemLayout(@NotNull Object item, int i) {
         if (item instanceof CommonListData)
             return R.layout.common_listview_content;
-        else if(item instanceof MainHeader)
+        else if (item instanceof MainHeader)
             return R.layout.main_recycler_header;
-        else if(item instanceof ReserveMenu) return R.layout.reserve_searchinfo_menu_content;
+        else if (item instanceof ReserveMenu) return R.layout.reserve_searchinfo_menu_content;
+        return 0;
     }
 
     @Override
@@ -99,8 +104,6 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
                 binding.commonListViewTitle.setText(data.getTitle());
                 binding.commonListViewContent.setText(data.getContent());
                 binding.commonListViewTitle.setTextColor(Color.BLACK);
-                break;
-            case R.layout.main_first_header:
                 break;
         }
     }
@@ -117,5 +120,5 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
     @Override
     public void onClick(@NotNull Object o, @NotNull View view, int type, int position) {
         Log.e("asdf", "asdf" + position);
-    }3
+    }
 }

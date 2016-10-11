@@ -1,5 +1,7 @@
 package kr.edcan.rerant.model;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by JunseokOh on 2016. 10. 11..
  */
@@ -10,6 +12,12 @@ public class ReserveMenu {
         this.imageUrl = imageUrl;
         this.title = title;
         this.money = money;
+    }
+
+    public ReserveMenu(String imageUrl, String title, int money) {
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.money = money + "";
     }
 
     public String getImageUrl() {
@@ -25,6 +33,6 @@ public class ReserveMenu {
     }
 
     public String getMoneyString() {
-        return "\\" + money;
+        return new DecimalFormat("#,###").format(Integer.parseInt(money)) + "원";
     }
 }

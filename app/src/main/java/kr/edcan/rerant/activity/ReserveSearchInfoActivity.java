@@ -28,6 +28,9 @@ import com.github.nitrico.lastadapter.BR;
 
 import kr.edcan.rerant.databinding.CommonListviewContentBinding;
 import kr.edcan.rerant.model.CommonListData;
+import kr.edcan.rerant.model.MainHeader;
+import kr.edcan.rerant.model.ReserveFooter;
+import kr.edcan.rerant.model.ReserveMenu;
 
 
 public class ReserveSearchInfoActivity extends AppCompatActivity implements LastAdapter.LayoutHandler, LastAdapter.OnBindListener, LastAdapter.OnClickListener {
@@ -48,26 +51,28 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("레스토랑 드 세그");
         getSupportActionBar().setSubtitle("양식");
+        binding.collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsedTitleStyle);
+        binding.collapsingToolbar.setExpandedTitleTextAppearance(R.style.expandedTitleStyle);
+        binding.collapsingToolbar.setExpandedTitleMargin(
+                getResources().getDimensionPixelSize(R.dimen.common_titlemargin),
+                0,
+                0,
+                getResources().getDimensionPixelSize(R.dimen.common_titlemargin)
+        );
     }
 
     private void setDefault() {
         binding.reserveInfoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         arrayList = new ArrayList<>();
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.ic_reservesebu_reservestatus));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.ic_reservesebu_reservecancel));
+        arrayList.add(new CommonListData("현재 예약 가능", "지금 예약을 요청할 수 있습니다.", R.drawable.ic_reservesebu_reservestatus));
+        arrayList.add(new CommonListData("2시간 내에 예약 취소 가능", "이후 예약 취소 시 패널티가 발생할 수 있습니다.", R.drawable.ic_reservesebu_reservecancel));
         arrayList.add(new CommonListData("asdf", "asdf", R.drawable.ic_reservesebu_call));
         arrayList.add(new CommonListData("asdf", "asdf", R.drawable.ic_reservesebu_location));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
-        arrayList.add(new CommonListData("asdf", "asdf", R.drawable.bg_login));
+        arrayList.add(new MainHeader("메뉴", "식사할 메뉴를 선택해 주세요."));
+
         LastAdapter.with(arrayList, BR.item)
                 .map(CommonListData.class, R.layout.common_listview_content)
+                .map(MainHeader.class, R.layout.main_first_header)
                 .layoutHandler(this)
                 .onBindListener(this)
                 .onClickListener(this)
@@ -76,17 +81,26 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
 
     @Override
     public int getItemLayout(@NotNull Object item, int i) {
-        return R.layout.common_listview_content;
+        if (item instanceof CommonListData)
+            return R.layout.common_listview_content;
+        else if(item instanceof MainHeader)
+            return R.layout.main_recycler_header;
+        else if(item instanceof ReserveMenu) return R.layout.reserve_searchinfo_menu_content;
     }
 
     @Override
     public void onBind(@NotNull Object o, @NotNull View view, int type, int pos) {
         switch (type) {
             case R.layout.common_listview_content:
+                CommonListData data = (CommonListData) arrayList.get(pos);
                 CommonListviewContentBinding binding = DataBindingUtil.getBinding(view);
                 binding.commonListViewIcon.setVisibility(View.VISIBLE);
-                binding.commonListViewIcon.setImageResource(((CommonListData) arrayList.get(pos)).getIcon());
+                binding.commonListViewIcon.setImageResource(data.getIcon());
+                binding.commonListViewTitle.setText(data.getTitle());
+                binding.commonListViewContent.setText(data.getContent());
                 binding.commonListViewTitle.setTextColor(Color.BLACK);
+                break;
+            case R.layout.main_first_header:
                 break;
         }
     }
@@ -103,5 +117,5 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
     @Override
     public void onClick(@NotNull Object o, @NotNull View view, int type, int position) {
         Log.e("asdf", "asdf" + position);
-    }
+    }3
 }

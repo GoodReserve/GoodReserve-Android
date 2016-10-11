@@ -23,4 +23,8 @@ public class ReserveMenu {
     public String getMoney() {
         return money;
     }
+
+    public String getMoneyString() {
+        return "\\" + money;
+    }
 }

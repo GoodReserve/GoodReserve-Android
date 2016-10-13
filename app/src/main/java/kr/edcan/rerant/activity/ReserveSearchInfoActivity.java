@@ -29,7 +29,7 @@ import com.github.nitrico.lastadapter.BR;
 import kr.edcan.rerant.databinding.CommonListviewContentBinding;
 import kr.edcan.rerant.model.CommonListData;
 import kr.edcan.rerant.model.MainHeader;
-import kr.edcan.rerant.model.ReserveFooter;
+import kr.edcan.rerant.model.ReserveBenefit;
 import kr.edcan.rerant.model.ReserveMenu;
 
 
@@ -73,6 +73,8 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
         arrayList.add(new ReserveMenu("", "한글로 드 스테이크", 40620));
         arrayList.add(new ReserveMenu("", "한글로 드 스테이크", 40620));
         arrayList.add(new ReserveMenu("", "한글로 드 스테이크", 40620));
+        arrayList.add(new MainHeader("혜택", "예약이 성사될 시 제공되는 혜택입니다."));
+        arrayList.add(new ReserveBenefit("10%", "한글로 드 스테이크 메뉴를 주문 시 한글로 드 스테이크 올 그란디움 시크릿 베이크드로 업그레이드 제공."));
 
         LastAdapter.with(arrayList, BR.item)
                 .map(CommonListData.class, R.layout.common_listview_content)
@@ -90,6 +92,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
         else if (item instanceof MainHeader)
             return R.layout.main_recycler_header;
         else if (item instanceof ReserveMenu) return R.layout.reserve_searchinfo_menu_content;
+        else if (item instanceof ReserveBenefit) return R.layout.reserve_searchinfo_menu_benefit;
         return 0;
     }
 

@@ -1,4 +1,4 @@
-package kr.edcan.rerant.activity;
+package kr.edcan.rerant.model;
 
 /**
  * Created by Junseok on 2016-10-13.

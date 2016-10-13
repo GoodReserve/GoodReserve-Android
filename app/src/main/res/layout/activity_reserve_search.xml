@@ -1,0 +1,122 @@
+<!--
+  ~ Created by Junseok Oh on 2016.
+  ~ Copyright by Good-Reserve Project @kotohana5706
+  ~ All rights reversed.
+  -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/activity_reserve_complete"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="kr.edcan.rerant.activity.ReserveCompleteActivity">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.ActionBar"
+                app:layout_scrollFlags="scroll|enterAlways" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFF"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="56dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:padding="16dp"
+                            android:src="@drawable/ic_actionbar_reservesearch_sort" />
+
+                        <Spinner
+                            android:id="@+id/searchFilterSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/searchFilterSelect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:padding="20dp"
+                        android:src="@drawable/btn_actionbar_reservesearch_filter" />
+                </RelativeLayout>
+
+                <HorizontalScrollView
+                    android:id="@+id/searchTagParent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:visibility="gone">
+
+                    <!-- Must Contain Tag Layout -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <kr.edcan.rerant.views.CartaTagView
+                            android:id="@+id/menuType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawablePadding="10dp"
+                            android:drawableRight="@drawable/btn_filter_delete"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="10dp"
+                            android:paddingTop="10dp"
+                            android:textColor="#FFFFFF"
+                            app:fullMode="true"
+                            app:textThemeColor="#000"
+                            app:textThemeColorEnabled="true"
+                            app:themeColor="#FFF" />
+
+                        <kr.edcan.rerant.views.CartaTagView
+                            android:id="@+id/meetingType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:drawablePadding="10dp"
+                            android:drawableRight="@drawable/btn_filter_delete"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="10dp"
+                            android:paddingTop="10dp"
+                            android:textColor="#FFFFFF"
+                            app:fullMode="true"
+                            app:textThemeColor="#000"
+                            app:textThemeColorEnabled="true"
+                            app:themeColor="#FFF" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/reserveSearchRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

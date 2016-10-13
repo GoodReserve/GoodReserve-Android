@@ -1,9 +1,3 @@
-<!--
-  ~ Created by Junseok Oh on 2016.
-  ~ Copyright by Good-Reserve Project by Sunrin Internet High School EDCAN / IWOP / ZEROPEN
-  ~ All rights reversed.
-  -->
-
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -14,9 +8,8 @@
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="seekArcStyle">@style/SeekArc</item>
     </style>
 
     <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.NoActionBar">
@@ -26,5 +19,20 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+    <style name="expandedTitleStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="collapsedTitleStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="AppTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorPrimaryInverse">@color/colorPrimary</item>
+        <item name="actionMenuTextColor">@color/colorPrimary</item>
     </style>
 </resources>

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kr.edworopen.goodreserve">
+    package="kr.edcan.rerant">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".activity.ApplicationLauncher"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:name=".activity.ApplicationLauncher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,6 +18,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.MyPageActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.ReserveLogActivity" />
+        <activity android:name=".activity.ReserveSearchActivity" />
+        <activity android:name=".activity.ReserveSearchInfoActivity" />
+        <activity android:name=".activity.ShoppingCartActivity" />
+        <activity android:name=".activity.FilterSelectActivity" />
+        <activity android:name=".activity.ReserveExecuteActivity" />
+        <activity android:name=".activity.ReserveCompleteActivity" />
+        <activity android:name=".activity.AuthActivity" />
+        <activity android:name=".activity.LoginActivity"></activity>
     </application>
 
 </manifest>

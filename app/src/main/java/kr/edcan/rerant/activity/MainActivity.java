@@ -15,6 +15,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.v4.util.Pair;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,7 @@ import com.github.nitrico.lastadapter.LastAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import kr.edcan.rerant.R;
 import kr.edcan.rerant.databinding.ActivityMainBinding;
@@ -44,6 +46,11 @@ import kr.edcan.rerant.model.MainContent;
 import kr.edcan.rerant.model.MainHeader;
 import kr.edcan.rerant.model.MainTopHeader;
 import kr.edcan.rerant.model.Restaurant;
+import kr.edcan.rerant.model.User;
+import kr.edcan.rerant.utils.DataManager;
+import kr.edcan.rerant.utils.LoadFacebookInfo;
+import kr.edcan.rerant.utils.NetworkHelper;
+import kr.edcan.rerant.utils.NetworkInterface;
 import kr.edcan.rerant.views.RoundImageView;
 
 
@@ -56,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     ArrayList<RoundImageView> indicatorArr;
     PagerAdapterClass pageAdapter;
     Handler viewPagerHandler = new Handler();
+    DataManager manager;
+    NetworkInterface service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         getSupportActionBar().setTitle("");
         binding.toolbar.setBackgroundColor(Color.WHITE);
         binding.progressLoading.startAnimation();
+        checkAuthStatus();
         setData();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -72,6 +82,34 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
                 initUI();
             }
         }, 600);
+    }
+
+    private void checkAuthStatus() {
+        manager = new DataManager(this);
+        service = NetworkHelper.getNetworkInstance();
+        Pair<Boolean, User> userPair = manager.getActiveUser();
+        if (!userPair.first) {
+            startActivity(new Intent(getApplicationContext(), AuthActivity.class));
+            finish();
+        } else {
+            // validate
+            switch (userPair.second.getUserType()) {
+                case 0:
+//                        boolean b = new LoadFacebookInfo().execute(manager.getFacebookUserCredential()).get();
+                    break;
+//                case 1:
+//                    new LoadTwitterInfo().execute(dataManager.getTwitterUserCredentials());
+//                    break;
+//                case 2:
+//                    // Kakao
+//                    break;
+//                case 3:
+//                    // Naver
+//                    break;
+//                case 4:
+//                    new LoadNativeUserInfo().execute(dataManager.getActiveUser().second.getToken());
+            }
+        }
     }
 
     private void setData() {

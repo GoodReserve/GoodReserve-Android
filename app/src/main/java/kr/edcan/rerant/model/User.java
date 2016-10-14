@@ -57,7 +57,12 @@ public class User {
         return reservation;
     }
 
+    public int getUserType() {
+        return userType;
+    }
+
     public ArrayList<String> getReservation_waiting() {
         return reservation_waiting;
     }
+
 }

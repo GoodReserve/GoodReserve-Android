@@ -10,13 +10,14 @@ import kr.edcan.rerant.model.User;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * Created by JunseokOh on 2016. 8. 11..
  */
 public interface NetworkInterface {
 
-    @GET("/")
-    Call<User> facebookLogin(@Field("token") String token);
+    @GET("/auth/facebook/token")
+    Call<User> facebookLogin(@Query("access_token") String token);
 
 }

@@ -23,8 +23,8 @@ import kr.edcan.rerant.model.User;
 
 public class DataManager {
     /* Login Type
-    * 0 Native
-    * 1: Facebook
+    * 0 Facebook
+    * 1: Native
     * */
 
     /* Data Keys */

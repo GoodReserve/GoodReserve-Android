@@ -20,15 +20,12 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.github.nitrico.lastadapter.BR;
 import com.github.nitrico.lastadapter.LastAdapter;
@@ -36,7 +33,6 @@ import com.github.nitrico.lastadapter.LastAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import kr.edcan.rerant.R;
 import kr.edcan.rerant.databinding.ActivityMainBinding;
@@ -48,7 +44,6 @@ import kr.edcan.rerant.model.MainTopHeader;
 import kr.edcan.rerant.model.Restaurant;
 import kr.edcan.rerant.model.User;
 import kr.edcan.rerant.utils.DataManager;
-import kr.edcan.rerant.utils.LoadFacebookInfo;
 import kr.edcan.rerant.utils.NetworkHelper;
 import kr.edcan.rerant.utils.NetworkInterface;
 import kr.edcan.rerant.views.RoundImageView;

@@ -47,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
         } else if (!StringUtils.fullFilled(binding.loginEmail, binding.loginPassword)) {
             Toast.makeText(this, "빈칸 없이 입력해주세요!", Toast.LENGTH_SHORT).show();
         } else {
-            Log.e("asdf", binding.loginEmail.getText().toString().trim());
             userLogin = NetworkHelper.getNetworkInstance().nativeLogin(
                     binding.loginEmail.getText().toString().trim(), binding.loginPassword.getText().toString().trim()
             );

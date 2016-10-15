@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Network;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -20,12 +21,14 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.github.nitrico.lastadapter.BR;
 import com.github.nitrico.lastadapter.LastAdapter;
@@ -47,6 +50,9 @@ import kr.edcan.rerant.utils.DataManager;
 import kr.edcan.rerant.utils.NetworkHelper;
 import kr.edcan.rerant.utils.NetworkInterface;
 import kr.edcan.rerant.views.RoundImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements LastAdapter.OnClickListener, LastAdapter.OnBindListener, LastAdapter.LayoutHandler {
@@ -88,21 +94,60 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
             finish();
         } else {
             // validate
+            String token = userPair.second.getAuth_token();
             switch (userPair.second.getUserType()) {
                 case 0:
-//                        boolean b = new LoadFacebookInfo().execute(manager.getFacebookUserCredential()).get();
+                    Call<User> facebookLogin = NetworkHelper.getNetworkInstance().facebookLogin(token);
+                    facebookLogin.enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            switch (response.code()) {
+                                case 200:
+                                    Toast.makeText(MainActivity.this, response.body().getName() + " 님 안녕하세요!", Toast.LENGTH_SHORT).show();
+                                    manager.saveUserInfo(response.body(), 0);
+                                    break;
+                                default:
+                                    Toast.makeText(MainActivity.this, "로그인된 계정의 세션이 만료되어, 다시 로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+                                    Log.e("asdf", response.code() + "");
+                                    break;
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), AuthActivity.class));
+                            finish();
+                            Log.e("asdf", t.getMessage());
+                        }
+                    });
                     break;
-//                case 1:
-//                    new LoadTwitterInfo().execute(dataManager.getTwitterUserCredentials());
-//                    break;
-//                case 2:
-//                    // Kakao
-//                    break;
-//                case 3:
-//                    // Naver
-//                    break;
-//                case 4:
-//                    new LoadNativeUserInfo().execute(dataManager.getActiveUser().second.getToken());
+                case 1:
+                    Call<User> authenticateUser = NetworkHelper.getNetworkInstance().authenticateUser(token);
+                    authenticateUser.enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            switch (response.code()) {
+                                case 200:
+                                    Toast.makeText(MainActivity.this, response.body().getName() + " 님 안녕하세요!", Toast.LENGTH_SHORT).show();
+                                    manager.saveUserInfo(response.body(), 1);
+                                    break;
+                                default:
+                                    Toast.makeText(MainActivity.this, "로그인된 계정의 세션이 만료되어, 다시 로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+                                    Log.e("asdf", response.code() + "");
+                                    break;
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), AuthActivity.class));
+                            finish();
+                            Log.e("asdf", t.getMessage());
+                        }
+                    });
+                    break;
             }
         }
     }

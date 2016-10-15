@@ -56,7 +56,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity implements LastAdapter.OnClickListener, LastAdapter.OnBindListener, LastAdapter.LayoutHandler {
+public class MainActivity extends AppCompatActivity implements LastAdapter.OnClickListener, LastAdapter.OnBindListener, LastAdapter.LayoutHandler, View.OnClickListener {
 
     final static int PAGER_SCROLL_DELAY = 3000;
     ActivityMainBinding binding;
@@ -215,7 +215,10 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         binding.mainRecycler.setVisibility(View.VISIBLE);
         binding.progressLoading.setVisibility(View.GONE);
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+        binding.bottomBar.setVisibility(View.VISIBLE);
         binding.mainRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        binding.bottomReserveHistory.setOnClickListener(this);
+        binding.bottomReserveLaunch.setOnClickListener(this);
         LastAdapter.with(mainContentList, BR.item)
                 .layoutHandler(this)
                 .map(MainTopHeader.class, R.layout.main_first_header)
@@ -283,6 +286,18 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         if (item instanceof MainHeader) return R.layout.main_recycler_header;
         else if (item instanceof MainTopHeader) return R.layout.main_first_header;
         else return R.layout.main_recycler_content;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.bottomReserveHistory:
+                startActivity(new Intent(getApplicationContext(), ReserveLogActivity.class));
+                break;
+            case R.id.bottomReserveLaunch:
+                startActivity(new Intent(getApplicationContext(), ReserveSearchActivity.class));
+                break;
+        }
     }
 
     /**
@@ -372,3 +387,4 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         }
     };
 }
+

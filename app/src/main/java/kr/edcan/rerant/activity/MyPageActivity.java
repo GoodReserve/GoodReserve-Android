@@ -7,6 +7,7 @@
 package kr.edcan.rerant.activity;
 
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -21,10 +22,12 @@ import kr.edcan.rerant.R;
 import kr.edcan.rerant.adapter.CommonListViewAdapter;
 import kr.edcan.rerant.databinding.ActivityMyPageBinding;
 import kr.edcan.rerant.model.CommonListData;
+import kr.edcan.rerant.utils.DataManager;
 
 public class MyPageActivity extends AppCompatActivity {
 
     ActivityMyPageBinding binding;
+    DataManager manager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,7 @@ public class MyPageActivity extends AppCompatActivity {
     }
 
     private void initAppbarLayout() {
+        manager = new DataManager(getApplicationContext());
         setSupportActionBar(binding.toolbar);
         binding.toolbar.setBackgroundColor(Color.WHITE);
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
@@ -53,7 +57,12 @@ public class MyPageActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i){
-//                    case
+                    case 3:
+                        manager.removeAllData();
+                        startActivity(new Intent(getApplicationContext(), AuthActivity.class));
+                        finish();
+                        break;
+
                 }
             }
         });

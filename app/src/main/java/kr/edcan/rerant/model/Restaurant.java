@@ -11,7 +11,7 @@ public class Restaurant {
     private String name, thumbnail, address, phone;
     private ArrayList<String> category;
     private int reservation_max, reservation_current, reservation_cancel, reservation_check;
-    private ArrayList<Menu> menu;
+    private ArrayList<String> menu;
 
     public Restaurant(String name, String thumbnail, String address) {
         this.name = name;
@@ -19,7 +19,7 @@ public class Restaurant {
         this.address = address;
     }
 
-    public Restaurant(String _id, String name, String thumbnail, String address, String phone, ArrayList<String> category, int reservation_max, int reservation_current, int reservation_cancel, int reservation_check, ArrayList<Menu> menu) {
+    public Restaurant(String _id, String name, String thumbnail, String address, String phone, ArrayList<String> category, int reservation_max, int reservation_current, int reservation_cancel, int reservation_check, ArrayList<String> menu) {
         this._id = _id;
         this.name = name;
         this.thumbnail = thumbnail;
@@ -82,7 +82,7 @@ public class Restaurant {
         return reservation_check;
     }
 
-    public ArrayList<Menu> getMenu() {
+    public ArrayList<String> getMenu() {
         return menu;
     }
 

@@ -33,6 +33,7 @@ import retrofit2.Response;
 public class AuthActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static Activity activity;
+
     public static void finishThis() {
         if (activity != null) activity.finish();
     }
@@ -51,6 +52,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initDefault() {
+        manager = new DataManager(getApplicationContext());
         fbManager = CallbackManager.Factory.create();
         LoginManager.getInstance().logOut();
         setFacebookCallback();
@@ -71,6 +73,9 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
                             case 200:
                                 manager.saveUserInfo(response.body(), 0);
                                 manager.saveFacebookCredential(loginResult.getAccessToken().getToken());
+                                Toast.makeText(AuthActivity.this, response.body().getName() + " 님 환영합니다!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                finish();
                                 break;
                             default:
                                 Toast.makeText(AuthActivity.this, "인증오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();

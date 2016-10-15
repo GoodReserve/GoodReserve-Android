@@ -44,6 +44,7 @@ import kr.edcan.rerant.databinding.MainHeaderViewpagerLayoutBinding;
 import kr.edcan.rerant.model.MainContent;
 import kr.edcan.rerant.model.MainHeader;
 import kr.edcan.rerant.model.MainTopHeader;
+import kr.edcan.rerant.model.Reservation;
 import kr.edcan.rerant.model.Restaurant;
 import kr.edcan.rerant.model.User;
 import kr.edcan.rerant.utils.DataManager;
@@ -98,9 +99,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
                                 case 200:
                                     Toast.makeText(MainActivity.this, response.body().getName() + " 님 안녕하세요!", Toast.LENGTH_SHORT).show();
                                     manager.saveUserInfo(response.body(), 0);
-                                    setData();
-                                    initUI();
-
+                                    setRecommendData();
                                     break;
                                 default:
                                     Toast.makeText(MainActivity.this, "로그인된 계정의 세션이 만료되어, 다시 로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
@@ -127,8 +126,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
                                 case 200:
                                     Toast.makeText(MainActivity.this, response.body().getName() + " 님 안녕하세요!", Toast.LENGTH_SHORT).show();
                                     manager.saveUserInfo(response.body(), 1);
-                                    setData();
-                                    initUI();
+                                    setRecommendData();
                                     break;
                                 default:
                                     Toast.makeText(MainActivity.this, "로그인된 계정의 세션이 만료되어, 다시 로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
@@ -150,44 +148,66 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         }
     }
 
-    private void setData() {
+    private void setRecommendData() {
+        headerList = new ArrayList<>();
+        Call<ArrayList<Restaurant>> getRestaurantList = NetworkHelper.getNetworkInstance().getRestaurantList();
+        getRestaurantList.enqueue(new Callback<ArrayList<Restaurant>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Restaurant>> call, Response<ArrayList<Restaurant>> response) {
+                switch (response.code()) {
+                    case 200:
+                        for (int i = 0; i < ((response.body().size() < 5) ? response.body().size() : 5); i++) {
+                            headerList.add(response.body().get(i));
+                            Log.e("asdf", response.body().get(i).getName());
+                        }
+                        break;
+                    default:
+                        Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
+                        Log.e("asdf", response.code() + "");
+                        break;
+                }
+                pageAdapter = new PagerAdapterClass(getApplicationContext());
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Restaurant>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
+                Log.e("asdf", t.getMessage());
+            }
+        });
+        setReservationData();
+    }
+
+    private void setReservationData() {
         mainContentList = new ArrayList<>();
         mainContentList.add(new MainTopHeader());
-        mainContentList.add(new MainHeader("곧 예약시간에 도달", "아래의 음식점에 예약한 시간이 얼마 남지 않았습니다."));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainHeader("찜한 음식점 리스트", "찜한 음식점에 따른 예약이 취소될 경우 빠르게 예약할 수 있습니다."));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
+        Call<ArrayList<Reservation>> getMyReservation = NetworkHelper.getNetworkInstance().getMyReservation(manager.getActiveUser().second.get_id());
+        getMyReservation.enqueue(new Callback<ArrayList<Reservation>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Reservation>> call, Response<ArrayList<Reservation>> response) {
+                switch (response.code()) {
+                    case 200:
+                        if (response.body().size() >= 1) {
+                            mainContentList.add(new MainHeader("곧 예약d시간에 도달", "아래의 음식점에 예약한 시간이 얼마 남지 않았습니다."));
+                            Reservation reservation = response.body().get(0);
+                            mainContentList.add(new MainContent(reservation.getReservation_code(), reservation.getRestaurant_name(), reservation.getReservation_time().toLocaleString()));
+                        }
+                        initUI();
+                        break;
+                    default:
+                        Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
+                        Log.e("asdf", response.code() + "");
+                        break;
+                }
+            }
 
-        headerList = new ArrayList<>();
-        headerList.add(new Restaurant("미스터 피자 어쩌고 저쩌고", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        headerList.add(new Restaurant("창림식 스웩 어쩌고 저꺼", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        headerList.add(new Restaurant("창림식 스웩 어쩌고 저꺼", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        headerList.add(new Restaurant("창림식 스웩 어쩌고 저꺼", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        headerList.add(new Restaurant("창림식 스웩 어쩌고 저꺼", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        pageAdapter = new PagerAdapterClass(getApplicationContext());
+            @Override
+            public void onFailure(Call<ArrayList<Reservation>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
+                Log.e("asdf1", t.getMessage());
+            }
+        });
+
     }
 
     private void initUI() {

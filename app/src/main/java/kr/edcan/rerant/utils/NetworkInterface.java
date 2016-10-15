@@ -33,7 +33,7 @@ public interface NetworkInterface {
     @POST("/auth/local/register")
     @FormUrlEncoded
     Call<User> registerUser(@Field("name") String name, @Field("phone") String phoneNum,
-                            @Field("password") String password, @Field("email") String email);
+                            @Field("password") String password, @Field("password_chk") String passwordChk, @Field("email") String email);
 
 
 }

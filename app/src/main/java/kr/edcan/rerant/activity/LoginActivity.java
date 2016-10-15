@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                             AuthActivity.finishThis();
                             finish();
                             break;
-                        case 403:
+                        case 400:
                             Toast.makeText(LoginActivity.this, "이메일 주소 혹은 비밀번호를 확인해주세요!", Toast.LENGTH_SHORT).show();
                         default:
                             Log.e("asdf", response.code() + "");

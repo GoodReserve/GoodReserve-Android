@@ -7,11 +7,11 @@ import java.util.ArrayList;
  */
 
 public class Restaurant {
-    private String _id;
-    private String name, thumbnail, address, phone;
-    private ArrayList<String> category;
-    private int reservation_max, reservation_current, reservation_cancel, reservation_check = 0;
-    private ArrayList<String> menu;
+    private String _id = "";
+    private String name = "", thumbnail = "", address = "", phone = "";
+    private ArrayList<String> category = null;
+    private int reservation_max = 0, reservation_current = 0, reservation_cancel = 0, reservation_check = 0;
+    private ArrayList<String> menu = null;
 
     public Restaurant(String name, String thumbnail, String address) {
         this.name = name;

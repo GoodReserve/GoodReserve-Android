@@ -127,6 +127,8 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
                                 case 200:
                                     Toast.makeText(MainActivity.this, response.body().getName() + " 님 안녕하세요!", Toast.LENGTH_SHORT).show();
                                     manager.saveUserInfo(response.body(), 1);
+                                    setData();
+                                    initUI();
                                     break;
                                 default:
                                     Toast.makeText(MainActivity.this, "로그인된 계정의 세션이 만료되어, 다시 로그인이 필요합니다.", Toast.LENGTH_SHORT).show();

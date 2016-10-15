@@ -65,4 +65,7 @@ public class User {
         return reservation_waiting;
     }
 
+    public String get_id() {
+        return _id;
+    }
 }

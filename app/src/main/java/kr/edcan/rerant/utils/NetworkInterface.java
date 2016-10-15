@@ -62,15 +62,20 @@ public interface NetworkInterface {
     Call<ArrayList<Restaurant>> getRestaurantListByTag(@Field("query") String query);
 
     // Reservation
+    @POST("/resv/cancel")
+    @FormUrlEncoded
+    Call<ResponseBody> cancelReservation(@Field("reservation_id") String reservationId, @Field("cancel_reason") int cancelReason,
+                                         @Field("cancel_comment") String cancelComment);
+
+    @POST("/me/resv")
+    @FormUrlEncoded
+    Call<ArrayList<Reservation>> getMyReservation(@Field("id") String id);
+
     @POST("/resv/add")
     @FormUrlEncoded
     Call<Reservation> generateReservation(@Field("reservation_id") String reservationId, @Field("reservation_marker") String _id,
                                           @Field("reservation_time") Date time, @Field("people") int peopleCount, @Field("reservation_payment") int payment,
                                           @Field("reservation_menu") String bucketId, @Field("reservation_price") int totalMoney);
-    @POST("/resv/cancel")
-    @FormUrlEncoded
-    Call<ResponseBody> cancelReservation(@Field("reservation_id") String reservationId, @Field("cancel_reason") int cancelReason,
-                                         @Field("cancel_comment") String cancelComment);
 
     // Get Menu
     @POST("/menu/rest/list")

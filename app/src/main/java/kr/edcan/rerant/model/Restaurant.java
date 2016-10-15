@@ -10,7 +10,7 @@ public class Restaurant {
     private String _id;
     private String name, thumbnail, address, phone;
     private ArrayList<String> category;
-    private int reservation_max, reservation_current, reservation_cancel, reservation_check;
+    private int reservation_max, reservation_current, reservation_cancel, reservation_check = 0;
     private ArrayList<String> menu;
 
     public Restaurant(String name, String thumbnail, String address) {

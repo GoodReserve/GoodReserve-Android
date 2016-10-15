@@ -188,10 +188,10 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
                 switch (response.code()) {
                     case 200:
                         if (response.body().size() >= 1) {
-                            mainContentList.add(new MainHeader("곧 예약d시간에 도달", "아래의 음식점에 예약한 시간이 얼마 남지 않았습니다."));
+                            mainContentList.add(new MainHeader("곧 예약시간에 도달", "아래의 음식점에 예약한 시간이 얼마 남지 않았습니다."));
                             Reservation reservation = response.body().get(0);
                             mainContentList.add(new MainContent(reservation.getReservation_code(), reservation.getRestaurant_name(), reservation.getReservation_time().toLocaleString()));
-                        }
+                        } else mainContentList.add("");
                         initUI();
                         break;
                     default:
@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
                 .map(MainTopHeader.class, R.layout.main_first_header)
                 .map(MainHeader.class, R.layout.main_recycler_header)
                 .map(MainContent.class, R.layout.main_recycler_content)
+                .map(String.class, R.layout.main_recycler_blank)
                 .onClickListener(this)
                 .onBindListener(this)
                 .into(binding.mainRecycler);
@@ -285,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     public int getItemLayout(@NotNull Object item, int i) {
         if (item instanceof MainHeader) return R.layout.main_recycler_header;
         else if (item instanceof MainTopHeader) return R.layout.main_first_header;
+        else if(item instanceof String) return R.layout.main_recycler_blank ;
         else return R.layout.main_recycler_content;
     }
 

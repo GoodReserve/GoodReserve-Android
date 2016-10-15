@@ -63,7 +63,6 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         LoginManager.getInstance().registerCallback(fbManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
-                Log.e("asdf", loginResult.getAccessToken().getToken());
                 facebookLogin = NetworkHelper.getNetworkInstance().facebookLogin(loginResult.getAccessToken().getToken());
                 facebookLogin.enqueue(new Callback<User>() {
                     @Override

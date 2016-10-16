@@ -4,6 +4,8 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 
+import kr.edcan.rerant.model.Menu;
+
 /**
  * Created by Junseok on 2016-10-04.
  */
@@ -34,5 +36,13 @@ public class StringUtils {
             result += (arrayList.get(i) + ((i == arrayList.size() - 1) ? "" : ","));
         }
         return result;
+    }
+
+    public static String getTotalMoney(ArrayList<Menu> menus) {
+        int total = 0;
+        for (Menu m : menus) {
+            total += Integer.parseInt(m.getPrice());
+        }
+        return total + " 원";
     }
 }

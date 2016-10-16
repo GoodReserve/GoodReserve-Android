@@ -99,7 +99,7 @@ public class ReserveExecuteActivity extends AppCompatActivity implements View.On
                                                 Call<Reservation> generateReservation = NetworkHelper.getNetworkInstance().generateReservation(
                                                         manager.getCurrentBucket().second.getRestaurantId(),
                                                         manager.getActiveUser().second.get_id(),
-                                                        new Date(System.currentTimeMillis()),
+                                                        new Date(System.currentTimeMillis() + 604800000),
                                                         personCount,
                                                         (isPayNow)?0:1,
                                                         manager.getCurrentBucket().second.get_id(),

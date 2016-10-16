@@ -41,6 +41,7 @@ import kr.edcan.rerant.R;
 import kr.edcan.rerant.databinding.ActivityMainBinding;
 import kr.edcan.rerant.databinding.MainFirstHeaderBinding;
 import kr.edcan.rerant.databinding.MainHeaderViewpagerLayoutBinding;
+import kr.edcan.rerant.databinding.MainRecyclerContentBinding;
 import kr.edcan.rerant.model.MainContent;
 import kr.edcan.rerant.model.MainHeader;
 import kr.edcan.rerant.model.MainTopHeader;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     Handler viewPagerHandler = new Handler();
     DataManager manager;
     NetworkInterface service;
+    Reservation reservation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
                     case 200:
                         if (response.body().size() >= 1) {
                             mainContentList.add(new MainHeader("곧 예약시간에 도달", "아래의 음식점에 예약한 시간이 얼마 남지 않았습니다."));
-                            Reservation reservation = response.body().get(0);
+                            reservation = response.body().get(0);
                             mainContentList.add(new MainContent(reservation.getReservation_code(), reservation.getRestaurant_name(), reservation.getReservation_time().toLocaleString()));
                         } else mainContentList.add("");
                         initUI();
@@ -282,6 +284,24 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
                     binding.viewPager.addOnPageChangeListener(pageListener);
                 }
                 break;
+            case R.layout.main_recycler_content:
+                MainRecyclerContentBinding contentBinding = DataBindingUtil.getBinding(view);
+                contentBinding.mainContentDetailExecute.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getApplicationContext(), ReserveCompleteActivity.class).putExtra("id", reservation.get_id()));
+                    }
+                });
+                contentBinding.mainContentAlertExecute.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        shareText(
+                                manager.getActiveUser().second.getName() + " 님이 품격있는 외식 문화의 시작, Rerant을 통해 " +
+                                        reservation.getRestaurant_name() + "에서 예약했습니다. 더 많은 정보를 보려면 아래 링크를 클릭해 주세요. http://goo.gl/rerantdownload"
+                        );
+
+                    }
+                });
         }
     }
 
@@ -289,13 +309,13 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     public int getItemLayout(@NotNull Object item, int i) {
         if (item instanceof MainHeader) return R.layout.main_recycler_header;
         else if (item instanceof MainTopHeader) return R.layout.main_first_header;
-        else if(item instanceof String) return R.layout.main_recycler_blank ;
+        else if (item instanceof String) return R.layout.main_recycler_blank;
         else return R.layout.main_recycler_content;
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.bottomReserveHistory:
                 startActivity(new Intent(getApplicationContext(), ReserveLogActivity.class));
                 break;
@@ -391,5 +411,12 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         public void onPageScrollStateChanged(int state) {
         }
     };
+
+    private void shareText(String s) {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, s);
+        startActivity(Intent.createChooser(sharingIntent, "예약 내용 공유하기"));
+    }
 }
 

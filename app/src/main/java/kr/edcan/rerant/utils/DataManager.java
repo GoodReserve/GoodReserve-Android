@@ -97,6 +97,12 @@ public class DataManager {
         return !preferences.getBoolean(HAS_ACTIVE_BUCKET, false) || (new Gson().fromJson(preferences.getString(BUCKET_SCHEMA, ""), Bucket.class).getRestaurantId().equals(restaurantId));
     }
 
+    public void destroyAllBucket(){
+        editor.remove(BUCKET_SCHEMA);
+        editor.remove(HAS_ACTIVE_BUCKET);
+        editor.apply();
+    }
+
     public void removeAllData() {
         editor.clear();
         editor.apply();

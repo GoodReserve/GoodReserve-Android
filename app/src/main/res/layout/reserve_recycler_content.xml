@@ -14,12 +14,12 @@
         android:foreground="?attr/selectableItemBackground"
         android:orientation="vertical">
 
-        <ImageView
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/reserveCardImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="2dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/pusheen" />
+            android:scaleType="centerCrop" />
 
         <ImageView
             android:layout_width="match_parent"

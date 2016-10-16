@@ -36,7 +36,9 @@ import kr.edcan.rerant.model.MainHeader;
 import kr.edcan.rerant.model.MainTopHeader;
 import kr.edcan.rerant.model.Reservation;
 import kr.edcan.rerant.model.Restaurant;
+import kr.edcan.rerant.utils.ImageSingleTon;
 import kr.edcan.rerant.utils.NetworkHelper;
+import kr.edcan.rerant.utils.StringUtils;
 import kr.edcan.rerant.views.CartaTagView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -173,6 +175,7 @@ public class ReserveSearchActivity extends AppCompatActivity implements LastAdap
                         Toast.makeText(ReserveSearchActivity.this, "공유!", Toast.LENGTH_SHORT).show();
                     }
                 });
+                binding.reserveCardImage.setImageUrl(StringUtils.getFullImageUrl(data.getThumbnail()), ImageSingleTon.getInstance(this).getImageLoader());
                 break;
         }
     }

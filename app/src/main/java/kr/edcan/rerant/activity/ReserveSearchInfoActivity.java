@@ -9,6 +9,7 @@ package kr.edcan.rerant.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.github.nitrico.lastadapter.LastAdapter;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,12 +31,16 @@ import kr.edcan.rerant.databinding.ActivityReserveSearchInfoBinding;
 import com.github.nitrico.lastadapter.BR;
 
 import kr.edcan.rerant.databinding.CommonListviewContentBinding;
+import kr.edcan.rerant.databinding.ReserveSearchinfoMenuContentBinding;
 import kr.edcan.rerant.model.CommonListData;
 import kr.edcan.rerant.model.MainHeader;
+import kr.edcan.rerant.model.Menu;
 import kr.edcan.rerant.model.ReserveBenefit;
 import kr.edcan.rerant.model.ReserveMenu;
 import kr.edcan.rerant.model.Restaurant;
+import kr.edcan.rerant.utils.ImageSingleTon;
 import kr.edcan.rerant.utils.NetworkHelper;
+import kr.edcan.rerant.utils.StringUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -82,7 +88,19 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
                 switch (response.code()) {
                     case 200:
                         data = response.body();
-                        initUI();
+                        int currentStatus = data.getReservation_check();
+                        int maxTime = data.getReservation_cancel();
+                        String number = data.getPhone();
+                        String location = data.getAddress();
+                        String title = data.getName();
+                        getSupportActionBar().setTitle(title);
+                        binding.reserveSearchHeaderImage.setImageUrl(StringUtils.getFullImageUrl(data.getThumbnail()), ImageSingleTon.getInstance(ReserveSearchInfoActivity.this).getImageLoader());
+                        arrayList.add(new CommonListData("현재 예약 " + ((currentStatus == 0) ? "가능" : "불가"), "지금 예약을 요청할 수 " + ((currentStatus == 0) ? "있습니다." : "없습니다."), R.drawable.ic_reservesebu_reservestatus));
+                        arrayList.add(new CommonListData((maxTime / 60) + "시간 내에 예약 취소 가능", "이후 예약 취소 시 패널티가 발생할 수 있습니다.", R.drawable.ic_reservesebu_reservecancel));
+                        arrayList.add(new CommonListData(number, "음식점에 전화로 문의할수 있습니다.", R.drawable.ic_reservesebu_call));
+                        arrayList.add(new CommonListData(location, "", R.drawable.ic_reservesebu_location));
+                        arrayList.add(new MainHeader("메뉴", "식사할 메뉴를 선택해 주세요."));
+                        setMenuData();
                         break;
                     default:
                         Toast.makeText(ReserveSearchInfoActivity.this, "서버와의 연동에 문제가 발생했습니다!", Toast.LENGTH_SHORT).show();
@@ -90,6 +108,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
                         break;
                 }
             }
+
 
             @Override
             public void onFailure(Call<Restaurant> call, Throwable t) {
@@ -100,21 +119,35 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
 
     }
 
+    private void setMenuData() {
+        Call<ArrayList<Menu>> getMenus = NetworkHelper.getNetworkInstance().getMenuList(restaurant_id);
+        getMenus.enqueue(new Callback<ArrayList<Menu>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Menu>> call, Response<ArrayList<Menu>> response) {
+                switch (response.code()) {
+                    case 200:
+                        arrayList.addAll(response.body());
+                        initUI();
+                        break;
+                    default:
+                        Toast.makeText(ReserveSearchInfoActivity.this, "서버와의 연동에 문제가 발생했습니다!", Toast.LENGTH_SHORT).show();
+                        Log.e("asdf", response.code() + "");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Menu>> call, Throwable t) {
+                Toast.makeText(ReserveSearchInfoActivity.this, "서버와의 연동에 문제가 발생했습니다!", Toast.LENGTH_SHORT).show();
+                Log.e("asdf", t.getMessage());
+            }
+        });
+    }
+
     private void initUI() {
-        int currentStatus = data.getReservation_check();
-        int maxTime = data.getReservation_cancel();
-        String number = data.getPhone();
-        String location = data.getAddress();
-        String title = data.getName();
-        getSupportActionBar().setTitle(title);
-        arrayList.add(new CommonListData("현재 예약 " + ((currentStatus == 0) ? "가능" : "불가"), "지금 예약을 요청할 수 " + ((currentStatus == 0) ? "있습니다." : "없습니다."), R.drawable.ic_reservesebu_reservestatus));
-        arrayList.add(new CommonListData((maxTime / 60) + "시간 내에 예약 취소 가능", "이후 예약 취소 시 패널티가 발생할 수 있습니다.", R.drawable.ic_reservesebu_reservecancel));
-        arrayList.add(new CommonListData(number, "음식점에 전화로 문의할수 있습니다.", R.drawable.ic_reservesebu_call));
-        arrayList.add(new CommonListData(location, "", R.drawable.ic_reservesebu_location));
-        arrayList.add(new MainHeader("메뉴", "식사할 메뉴를 선택해 주세요."));
-        arrayList.add(new ReserveMenu("", "한글로 드 스테이크", 40620));
-        arrayList.add(new MainHeader("혜택", "예약이 성사될 시 제공되는 혜택입니다."));
-        arrayList.add(new ReserveBenefit("10%", "한글로 드 스테이크 메뉴를 주문 시 한글로 드 스테이크 올 그란디움 시크릿 베이크드로 업그레이드 제공."));
+
+//        arrayList.add(new MainHeader("혜택", "예약이 성사될 시 제공되는 혜택입니다."));
+//        arrayList.add(new ReserveBenefit("10%", "한글로 드 스테이크 메뉴를 주문 시 한글로 드 스테이크 올 그란디움 시크릿 베이크드로 업그레이드 제공."));
         LastAdapter.with(arrayList, BR.item)
                 .map(CommonListData.class, R.layout.common_listview_content)
                 .map(MainHeader.class, R.layout.main_first_header)
@@ -131,7 +164,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
             return R.layout.common_listview_content;
         else if (item instanceof MainHeader)
             return R.layout.main_recycler_header;
-        else if (item instanceof ReserveMenu) return R.layout.reserve_searchinfo_menu_content;
+        else if (item instanceof Menu) return R.layout.reserve_searchinfo_menu_content;
         else if (item instanceof ReserveBenefit) return R.layout.reserve_searchinfo_menu_benefit;
         return 0;
     }
@@ -149,6 +182,11 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
                 binding.commonListViewTitle.setTextColor(Color.BLACK);
                 if (data.getContent().trim().equals(""))
                     binding.commonListViewContent.setVisibility(View.GONE);
+                break;
+            case R.layout.reserve_searchinfo_menu_content:
+                Menu menu = (Menu) o;
+                ReserveSearchinfoMenuContentBinding contentBinding = DataBindingUtil.getBinding(view);
+                contentBinding.menuContentImage.setImageUrl(StringUtils.getFullImageUrl(menu.getThumbnail()), ImageSingleTon.getInstance(this).getImageLoader());
                 break;
         }
     }

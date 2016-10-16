@@ -40,6 +40,17 @@
                     app:layout_collapseParallaxMultiplier="0.8"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+                    <com.android.volley.toolbox.NetworkImageView
+                        android:id="@+id/reserveSearchHeaderImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="2dp"
+                        android:src="@drawable/main_top_gradient" />
+
                 </RelativeLayout>
 
 

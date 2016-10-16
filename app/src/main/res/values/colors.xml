@@ -12,6 +12,6 @@
     <color name="textColorDark">#99000000</color>
     <color name="textColorSub">#55000000</color>
     <color name="textColor">#99000000</color>
-    <color name="dividerColor">#44FFFFFF</color>
+    <color name="dividerColor">#11000000</color>
     <color name="textColorWhiteSub">#99FFFFFF</color>
 </resources>

@@ -1,5 +1,7 @@
 package kr.edcan.rerant.model;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by JunseokOh on 2016. 10. 8..
  */
@@ -39,5 +41,8 @@ public class Menu {
 
     public String getPrice() {
         return price;
+    }
+    public String getMoneyString() {
+        return new DecimalFormat("#,###").format(Integer.parseInt(price)) + "원";
     }
 }

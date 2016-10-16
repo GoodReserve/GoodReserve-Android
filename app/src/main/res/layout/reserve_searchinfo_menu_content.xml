@@ -4,7 +4,7 @@
 
         <variable
             name="item"
-            type="kr.edcan.rerant.model.ReserveMenu" />
+            type="kr.edcan.rerant.model.Menu" />
     </data>
 
     <LinearLayout
@@ -28,7 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
+                <com.android.volley.toolbox.NetworkImageView
+                    android:id="@+id/menuContentImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -45,7 +46,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{item.title}"
+                        android:text="@{item.name}"
                         android:textColor="#FFF"
                         android:textSize="15sp"
                         android:textStyle="bold" />

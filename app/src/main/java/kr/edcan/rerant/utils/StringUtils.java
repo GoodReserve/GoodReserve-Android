@@ -45,4 +45,11 @@ public class StringUtils {
         }
         return total + " 원";
     }
+    public static int getTotalMoneyint(ArrayList<Menu> menus) {
+        int total = 0;
+        for (Menu m : menus) {
+            total += Integer.parseInt(m.getPrice());
+        }
+        return total;
+    }
 }

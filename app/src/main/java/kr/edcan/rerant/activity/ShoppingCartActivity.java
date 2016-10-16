@@ -6,6 +6,8 @@
 
 package kr.edcan.rerant.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -40,6 +42,11 @@ import retrofit2.Response;
 
 public class ShoppingCartActivity extends AppCompatActivity implements LastAdapter.LayoutHandler, LastAdapter.OnBindListener, LastAdapter.OnClickListener {
 
+    public static Activity activity;
+
+    public static void finishThis() {
+        if (activity != null) activity.finish();
+    }
 
     ArrayList<Object> arrayList;
     ActivityShoppingCartBinding binding;
@@ -49,6 +56,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements LastAdapt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_shopping_cart);
         initAppbarLayout();
         setDefault();
@@ -57,12 +65,13 @@ public class ShoppingCartActivity extends AppCompatActivity implements LastAdapt
     private void setDefault() {
         arrayList = new ArrayList<>();
         manager = new DataManager(getApplicationContext());
-        Call<Bucket> getBucketInfo = NetworkHelper.getNetworkInstance().getBucketInfo(manager.getCurrentBucket().second.get_id());
+        final Call<Bucket> getBucketInfo = NetworkHelper.getNetworkInstance().getBucketInfo(manager.getCurrentBucket().second.get_id());
         getBucketInfo.enqueue(new Callback<Bucket>() {
             @Override
             public void onResponse(Call<Bucket> call, Response<Bucket> response) {
                 switch (response.code()) {
                     case 200:
+                        manager.saveCurrentBucket(response.body(), manager.getCurrentBucket().second.getRestaurantId());
                         bucket = response.body();
                         for (Menu m : response.body().getMenus()) {
                             arrayList.add(m);
@@ -87,6 +96,12 @@ public class ShoppingCartActivity extends AppCompatActivity implements LastAdapt
             public void onFailure(Call<Bucket> call, Throwable t) {
                 Toast.makeText(ShoppingCartActivity.this, "서버와의 연동에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
                 Log.e("asdf", t.getMessage());
+            }
+        });
+        binding.reserveExecute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ReserveExecuteActivity.class));
             }
         });
     }

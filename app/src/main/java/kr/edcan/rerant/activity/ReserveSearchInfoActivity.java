@@ -6,6 +6,7 @@
 
 package kr.edcan.rerant.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -51,6 +52,12 @@ import retrofit2.Response;
 
 public class ReserveSearchInfoActivity extends AppCompatActivity implements LastAdapter.LayoutHandler, LastAdapter.OnBindListener, LastAdapter.OnClickListener {
 
+    public static Activity activity;
+
+    public static void finishThis() {
+        if (activity != null) activity.finish();
+    }
+
     Intent intent;
     String restaurant_id;
     ArrayList<Object> arrayList;
@@ -61,6 +68,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reserve_search_info);
         initAppbarLayout();
         setData();
@@ -89,8 +97,10 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
             @Override
             public void onClick(View view) {
                 if (manager.canMakeReservation(restaurant_id)) {
-                    if (manager.hasActiveBucket())
+                    if (manager.hasActiveBucket()) {
                         startActivity(new Intent(getApplicationContext(), ShoppingCartActivity.class));
+                        Log.e("asdfasdf", "1");
+                    }
                     else
                         Toast.makeText(ReserveSearchInfoActivity.this, "선택된 메뉴가 없습니다.\n메뉴를 먼저 선택해주세요!", Toast.LENGTH_SHORT).show();
                 }
@@ -209,7 +219,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
     }
 
     @Override
-    public void onClick(@NotNull Object o, @NotNull View view, int type, int position) {
+    public void onClick(@NotNull Object o, @NotNull final View view, int type, int position) {
         switch (type) {
             case R.layout.reserve_searchinfo_menu_content:
                 Log.e("asdf", restaurant_id + "   asdf");
@@ -226,7 +236,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
                                 switch (response.code()) {
                                     case 200:
                                         manager.saveCurrentBucket(response.body(), restaurant_id);
-                                        startActivity(new Intent(getApplicationContext(), ShoppingCartActivity.class));
+                                        view.performClick();
                                         break;
                                     default:
                                         Toast.makeText(ReserveSearchInfoActivity.this, "서버와의 연동에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
@@ -256,7 +266,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
                                             result.add(m.get_id());
                                         }
                                         result.add(menu.get_id());
-                                        Log.e("asdf", StringUtils.convertArraytoString(result));
+                                        Log.e("asdf convert", StringUtils.convertArraytoString(result));
                                         Call<ResponseBody> updateMenu = NetworkHelper.getNetworkInstance().updateBucket(bucketid, StringUtils.convertArraytoString(result));
                                         updateMenu.enqueue(new Callback<ResponseBody>() {
                                             @Override

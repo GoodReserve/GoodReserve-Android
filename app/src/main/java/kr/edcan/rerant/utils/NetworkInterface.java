@@ -77,6 +77,10 @@ public interface NetworkInterface {
                                           @Field("reservation_time") Date time, @Field("reservation_people") int peopleCount, @Field("reservation_payment") int payment,
                                           @Field("reservation_menu") String bucketId, @Field("reservation_price") int totalMoney);
 
+    @POST("/resv/search")
+    @FormUrlEncoded
+    Call<Reservation> getReservationInfo(@Field("id") String reservationId);
+
     // Get Menu
     @POST("/menu/rest/list")
     @FormUrlEncoded

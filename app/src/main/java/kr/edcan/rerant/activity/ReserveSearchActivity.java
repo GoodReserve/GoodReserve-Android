@@ -6,6 +6,7 @@
 
 package kr.edcan.rerant.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -46,6 +47,11 @@ import retrofit2.Response;
 
 public class ReserveSearchActivity extends AppCompatActivity implements LastAdapter.LayoutHandler, LastAdapter.OnBindListener, LastAdapter.OnClickListener {
 
+    public static Activity activity;
+
+    public static void finishThis() {
+        if (activity != null) activity.finish();
+    }
 
     private static final int FILTER_INTENT_CODE = 6974;
     ActivityReserveSearchBinding binding;
@@ -57,6 +63,8 @@ public class ReserveSearchActivity extends AppCompatActivity implements LastAdap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reserve_search);
         initAppbarLayout();
         setDefault();

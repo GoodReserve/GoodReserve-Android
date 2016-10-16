@@ -13,18 +13,19 @@ public class Reservation {
     * 0 선금결제
     * 1 현장결제
     * */
-    private String _id, reservation_marker, restaurant_id, restaurant_name, reservation_menu, reservation_code;
+    private String _id, reservation_marker, restaurant_id, restaurant_name, reservation_code;
     private Date reservation_time;
+    private ArrayList<Menu> reservation_menu;
     private int reservation_people, reservation_payment, reservation_price, cancel_type, reservation_status;
 
-    public Reservation(String _id, String reservation_marker, String restaurant_id, String restaurant_name, String reservation_menu, String reservation_code, Date reservation_time, int reservation_people, int reservation_payment, int reservation_price, int cancel_type, int reservation_status) {
+    public Reservation(String _id, String reservation_marker, String restaurant_id, String restaurant_name, String reservation_code, Date reservation_time, ArrayList<Menu> reservation_menu, int reservation_people, int reservation_payment, int reservation_price, int cancel_type, int reservation_status) {
         this._id = _id;
         this.reservation_marker = reservation_marker;
         this.restaurant_id = restaurant_id;
         this.restaurant_name = restaurant_name;
-        this.reservation_menu = reservation_menu;
         this.reservation_code = reservation_code;
         this.reservation_time = reservation_time;
+        this.reservation_menu = reservation_menu;
         this.reservation_people = reservation_people;
         this.reservation_payment = reservation_payment;
         this.reservation_price = reservation_price;
@@ -48,16 +49,16 @@ public class Reservation {
         return restaurant_name;
     }
 
-    public String getReservation_menu() {
-        return reservation_menu;
-    }
-
     public String getReservation_code() {
         return reservation_code;
     }
 
     public Date getReservation_time() {
         return reservation_time;
+    }
+
+    public ArrayList<Menu> getReservation_menu() {
+        return reservation_menu;
     }
 
     public int getReservation_people() {

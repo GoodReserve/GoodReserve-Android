@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import kr.edcan.rerant.model.Bucket;
 import kr.edcan.rerant.model.FacebookUser;
 import kr.edcan.rerant.model.User;
 
@@ -31,6 +32,8 @@ public class DataManager {
     * */
 
     /* Data Keys */
+    private static String BUCKET_SCHEMA = "bucket";
+    private static String HAS_ACTIVE_BUCKET = "hasbucket";
     private static String USER_SCHEMA = "user_schema";
     private static String HAS_ACTIVE_USER = "hasactive";
     private static String LOGIN_TYPE = "login_type";
@@ -75,6 +78,23 @@ public class DataManager {
         if (preferences.getBoolean(HAS_ACTIVE_USER, false) && preferences.getInt(LOGIN_TYPE, -1) == 0) {
             return preferences.getString(FACEBOOK_TOKEN, "");
         } else return "";
+    }
+
+    public void saveCurrentBucket(Bucket bucket, String restaurantId) {
+        editor.putString(BUCKET_SCHEMA, new Gson().toJson(bucket));
+        editor.putBoolean(HAS_ACTIVE_BUCKET, true);
+        editor.apply();
+    }
+
+    public Pair<Boolean, Bucket> getCurrentBucket() {
+        if (preferences.getBoolean(HAS_ACTIVE_BUCKET, false)) {
+            Bucket bucket = new Gson().fromJson(preferences.getString(BUCKET_SCHEMA, ""), Bucket.class);
+            return Pair.create(true, bucket);
+        } else return Pair.create(false, null);
+    }
+
+    public boolean canMakeReservation(String restaurantId) {
+        return !preferences.getBoolean(HAS_ACTIVE_BUCKET, false) || (new Gson().fromJson(preferences.getString(BUCKET_SCHEMA, ""), Bucket.class).getRestaurantId().equals(restaurantId));
     }
 
     public void removeAllData() {

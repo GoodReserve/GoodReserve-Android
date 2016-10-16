@@ -81,9 +81,11 @@ public class DataManager {
     }
 
     public void saveCurrentBucket(Bucket bucket, String restaurantId) {
+        bucket.setRestaurantId(restaurantId);
         editor.putString(BUCKET_SCHEMA, new Gson().toJson(bucket));
         editor.putBoolean(HAS_ACTIVE_BUCKET, true);
         editor.apply();
+        Log.e("asdf", new Gson().fromJson(preferences.getString(BUCKET_SCHEMA, ""), Bucket.class).getRestaurantId());
     }
 
     public Pair<Boolean, Bucket> getCurrentBucket() {
@@ -94,13 +96,19 @@ public class DataManager {
     }
 
     public boolean canMakeReservation(String restaurantId) {
-        return !preferences.getBoolean(HAS_ACTIVE_BUCKET, false) || (new Gson().fromJson(preferences.getString(BUCKET_SCHEMA, ""), Bucket.class).getRestaurantId().equals(restaurantId));
+        if (preferences.getBoolean(HAS_ACTIVE_BUCKET, false)) {
+            return (new Gson().fromJson(preferences.getString(BUCKET_SCHEMA, ""), Bucket.class).getRestaurantId()).equals(restaurantId);
+        } else return true;
     }
 
-    public void destroyAllBucket(){
+    public void destroyAllBucket() {
         editor.remove(BUCKET_SCHEMA);
         editor.remove(HAS_ACTIVE_BUCKET);
         editor.apply();
+    }
+
+    public boolean hasActiveBucket() {
+        return preferences.getBoolean(HAS_ACTIVE_BUCKET, false);
     }
 
     public void removeAllData() {

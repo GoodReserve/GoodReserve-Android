@@ -85,11 +85,11 @@ public interface NetworkInterface {
     // Bucket
     @POST("/bucket/add")
     @FormUrlEncoded
-    Call<Bucket> newBucket(@Field("menus") ArrayList<Menu> menus);
+    Call<Bucket> newBucket(@Field("menus") ArrayList<String> menus);
 
     @POST("/bucket/update")
     @FormUrlEncoded
-    Call<Bucket> updateBucket(@Field("bucket_id") String bucketId, @Field("menus") ArrayList<Menu> menus);
+    Call<ResponseBody> updateBucket(@Field("bucket_id") String bucketId, @Field("menus") String array);
 
     @POST("/bucket/info")
     @FormUrlEncoded

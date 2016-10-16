@@ -32,15 +32,18 @@ import com.github.nitrico.lastadapter.BR;
 
 import kr.edcan.rerant.databinding.CommonListviewContentBinding;
 import kr.edcan.rerant.databinding.ReserveSearchinfoMenuContentBinding;
+import kr.edcan.rerant.model.Bucket;
 import kr.edcan.rerant.model.CommonListData;
 import kr.edcan.rerant.model.MainHeader;
 import kr.edcan.rerant.model.Menu;
 import kr.edcan.rerant.model.ReserveBenefit;
 import kr.edcan.rerant.model.ReserveMenu;
 import kr.edcan.rerant.model.Restaurant;
+import kr.edcan.rerant.utils.DataManager;
 import kr.edcan.rerant.utils.ImageSingleTon;
 import kr.edcan.rerant.utils.NetworkHelper;
 import kr.edcan.rerant.utils.StringUtils;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,6 +56,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
     ArrayList<Object> arrayList;
     Restaurant data;
     ActivityReserveSearchInfoBinding binding;
+    DataManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +152,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
 
 //        arrayList.add(new MainHeader("혜택", "예약이 성사될 시 제공되는 혜택입니다."));
 //        arrayList.add(new ReserveBenefit("10%", "한글로 드 스테이크 메뉴를 주문 시 한글로 드 스테이크 올 그란디움 시크릿 베이크드로 업그레이드 제공."));
+        manager = new DataManager(getApplicationContext());
         LastAdapter.with(arrayList, BR.item)
                 .map(CommonListData.class, R.layout.common_listview_content)
                 .map(MainHeader.class, R.layout.main_first_header)
@@ -192,6 +197,93 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
     }
 
     @Override
+    public void onClick(@NotNull Object o, @NotNull View view, int type, int position) {
+        switch (type) {
+            case R.layout.reserve_searchinfo_menu_content:
+                Log.e("asdf", restaurant_id+"   asdf");
+                if (manager.canMakeReservation(restaurant_id)) {
+                    final Menu menu = (Menu) o;
+                    boolean hasActiveBucket = manager.hasActiveBucket();
+                    ArrayList<String> newBucket = new ArrayList<>();
+                    newBucket.add(menu.get_id());
+                    if (!hasActiveBucket) {
+                        Call<Bucket> generateBucket = NetworkHelper.getNetworkInstance().newBucket(newBucket);
+                        generateBucket.enqueue(new Callback<Bucket>() {
+                            @Override
+                            public void onResponse(Call<Bucket> call, Response<Bucket> response) {
+                                switch (response.code()) {
+                                    case 200:
+                                        manager.saveCurrentBucket(response.body(), restaurant_id);
+                                        startActivity(new Intent(getApplicationContext(), ShoppingCartActivity.class));
+                                        break;
+                                    default:
+                                        Toast.makeText(ReserveSearchInfoActivity.this, "서버와의 연동에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                                        Log.e("asdf", response.code() + "");
+                                        break;
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Bucket> call, Throwable t) {
+                                Toast.makeText(ReserveSearchInfoActivity.this, "서버와의 연동에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                                Log.e("asdf", t.getMessage());
+                            }
+                        });
+                    } else {
+                        final String bucketid = manager.getCurrentBucket().second.get_id();
+                        final Call<Bucket> getCurrentBucketInfo = NetworkHelper.getNetworkInstance().getBucketInfo(bucketid);
+                        getCurrentBucketInfo.enqueue(new Callback<Bucket>() {
+                            @Override
+                            public void onResponse(Call<Bucket> call, Response<Bucket> response) {
+                                switch (response.code()) {
+                                    case 200:
+                                        ArrayList<Menu> origin = response.body().getMenus();
+                                        ArrayList<String> result = new ArrayList<String>();
+                                        for(Menu m : origin){
+                                            Log.e("asdf", m.getName());
+                                            result.add(m.get_id());
+                                        }
+                                        result.add(menu.get_id());
+                                        Log.e("asdf", StringUtils.convertArraytoString(result));
+                                        Call<ResponseBody> updateMenu = NetworkHelper.getNetworkInstance().updateBucket(bucketid, StringUtils.convertArraytoString(result));
+                                        updateMenu.enqueue(new Callback<ResponseBody>() {
+                                            @Override
+                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                switch (response.code()){
+                                                    case 200:
+                                                        startActivity(new Intent(getApplicationContext(), ShoppingCartActivity.class));
+                                                        break;
+                                                    default:
+                                                        Toast.makeText(ReserveSearchInfoActivity.this, "서버와의 연동에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                                Toast.makeText(ReserveSearchInfoActivity.this, "서버와의 연동에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                                                Log.e("asdf", t.getMessage());
+                                            }
+                                        });
+                                        break;
+                                    default:
+                                        Toast.makeText(ReserveSearchInfoActivity.this, "서버와의 연동에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                                        Log.e("asdf", response.code() + "");
+                                        break;
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Bucket> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                }
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -200,8 +292,5 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(@NotNull Object o, @NotNull View view, int type, int position) {
-        Log.e("asdf", "asdf" + position);
-    }
+
 }

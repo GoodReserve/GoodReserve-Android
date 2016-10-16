@@ -2,6 +2,8 @@ package kr.edcan.rerant.utils;
 
 import android.widget.EditText;
 
+import java.util.ArrayList;
+
 /**
  * Created by Junseok on 2016-10-04.
  */
@@ -24,5 +26,13 @@ public class StringUtils {
 
     public static String getFullImageUrl(String thumbnailUrl) {
         return "http://kafuuchino.one:3000" + thumbnailUrl;
+    }
+
+    public static String convertArraytoString(ArrayList<String> arrayList) {
+        String result = "";
+        for (int i = 0; i < arrayList.size(); i++) {
+            result += (arrayList.get(i) + ((i == arrayList.size() - 1) ? "" : ","));
+        }
+        return result;
     }
 }

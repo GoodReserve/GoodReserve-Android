@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="240dp">
 
-        <ImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/viewPagerImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -48,8 +48,10 @@ import kr.edcan.rerant.model.Reservation;
 import kr.edcan.rerant.model.Restaurant;
 import kr.edcan.rerant.model.User;
 import kr.edcan.rerant.utils.DataManager;
+import kr.edcan.rerant.utils.ImageSingleTon;
 import kr.edcan.rerant.utils.NetworkHelper;
 import kr.edcan.rerant.utils.NetworkInterface;
+import kr.edcan.rerant.utils.StringUtils;
 import kr.edcan.rerant.views.RoundImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -273,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
             case R.layout.main_first_header:
                 MainFirstHeaderBinding binding = DataBindingUtil.getBinding(view);
                 if (binding.viewPager.getAdapter() == null) {
+                    binding.viewPager.setOffscreenPageLimit(5);
                     binding.viewPager.setAdapter(pageAdapter);
                     setViewPagerScroll(binding.viewPager);
                     setViewPagerIndicator(binding.indicatorParent);
@@ -322,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
             Restaurant data = headerList.get(position);
             binding.viewPagerResName.setText(data.getName());
             binding.viewPagerResLocation.setText(data.getAddress());
-            binding.viewPagerImage.setImageResource(R.drawable.pusheen);
+            binding.viewPagerImage.setImageUrl(StringUtils.getFullImageUrl(data.getThumbnail()), ImageSingleTon.getInstance(MainActivity.this).getImageLoader());
             binding.viewPagerImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             container.addView(binding.getRoot(), 0);
             return binding.getRoot();

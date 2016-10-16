@@ -71,6 +71,7 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:gravity="center"
                     android:text="한식"
                     android:textSize="15sp" />
@@ -142,6 +143,7 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:gravity="center"
                     android:text="회식"
                     android:textSize="15sp" />

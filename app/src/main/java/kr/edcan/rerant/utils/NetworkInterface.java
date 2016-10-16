@@ -73,8 +73,8 @@ public interface NetworkInterface {
 
     @POST("/resv/add")
     @FormUrlEncoded
-    Call<Reservation> generateReservation(@Field("reservation_id") String reservationId, @Field("reservation_marker") String _id,
-                                          @Field("reservation_time") Date time, @Field("people") int peopleCount, @Field("reservation_payment") int payment,
+    Call<Reservation> generateReservation(@Field("restaurant_id") String restaurantId, @Field("reservation_marker") String _id,
+                                          @Field("reservation_time") Date time, @Field("reservation_people") int peopleCount, @Field("reservation_payment") int payment,
                                           @Field("reservation_menu") String bucketId, @Field("reservation_price") int totalMoney);
 
     // Get Menu

@@ -85,6 +85,18 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
         intent = getIntent();
         restaurant_id = intent.getStringExtra("restaurant_id");
         binding.reserveInfoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.bottomReserveList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (manager.canMakeReservation(restaurant_id)) {
+                    if (manager.hasActiveBucket())
+                        startActivity(new Intent(getApplicationContext(), ShoppingCartActivity.class));
+                    else
+                        Toast.makeText(ReserveSearchInfoActivity.this, "선택된 메뉴가 없습니다.\n메뉴를 먼저 선택해주세요!", Toast.LENGTH_SHORT).show();
+                }
+                else Toast.makeText(getApplicationContext(), "현재 다른 식당에 예약중이거나 예약 준비중입니다.\n계속하시려면 예약중인 식당의 예약을 취소해주세요.", Toast.LENGTH_SHORT).show();
+            }
+        });
         Call<Restaurant> getRestaurantInfo = NetworkHelper.getNetworkInstance().getRestaurantInfo(restaurant_id);
         getRestaurantInfo.enqueue(new Callback<Restaurant>() {
             @Override
@@ -200,7 +212,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
     public void onClick(@NotNull Object o, @NotNull View view, int type, int position) {
         switch (type) {
             case R.layout.reserve_searchinfo_menu_content:
-                Log.e("asdf", restaurant_id+"   asdf");
+                Log.e("asdf", restaurant_id + "   asdf");
                 if (manager.canMakeReservation(restaurant_id)) {
                     final Menu menu = (Menu) o;
                     boolean hasActiveBucket = manager.hasActiveBucket();
@@ -239,7 +251,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
                                     case 200:
                                         ArrayList<Menu> origin = response.body().getMenus();
                                         ArrayList<String> result = new ArrayList<String>();
-                                        for(Menu m : origin){
+                                        for (Menu m : origin) {
                                             Log.e("asdf", m.getName());
                                             result.add(m.get_id());
                                         }
@@ -249,7 +261,7 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
                                         updateMenu.enqueue(new Callback<ResponseBody>() {
                                             @Override
                                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                                switch (response.code()){
+                                                switch (response.code()) {
                                                     case 200:
                                                         startActivity(new Intent(getApplicationContext(), ShoppingCartActivity.class));
                                                         break;
@@ -275,10 +287,13 @@ public class ReserveSearchInfoActivity extends AppCompatActivity implements Last
 
                             @Override
                             public void onFailure(Call<Bucket> call, Throwable t) {
-
+                                Toast.makeText(ReserveSearchInfoActivity.this, "서버와의 연동에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                                Log.e("asdf", t.getMessage());
                             }
                         });
                     }
+                } else {
+                    Toast.makeText(this, "현재 다른 식당에 예약중이거나 예약 준비중입니다.\n계속하시려면 예약중인 식당의 예약을 취소해주세요.", Toast.LENGTH_SHORT).show();
                 }
         }
     }

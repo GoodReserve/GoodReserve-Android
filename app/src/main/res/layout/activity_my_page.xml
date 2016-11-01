@@ -1,4 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <!--
   ~ Created by Junseok Oh on 2016.
@@ -22,7 +23,9 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.ActionBar" />
+
+                android:theme="@style/AppTheme.ActionBar"
+                app:contentInsetStartWithNavigation="0dp" />
         </android.support.design.widget.AppBarLayout>
 
         <ListView

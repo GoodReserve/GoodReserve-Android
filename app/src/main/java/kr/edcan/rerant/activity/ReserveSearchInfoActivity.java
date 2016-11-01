@@ -26,10 +26,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import kr.edcan.rerant.BR;
 import kr.edcan.rerant.R;
 import kr.edcan.rerant.databinding.ActivityReserveSearchInfoBinding;
 
-import com.github.nitrico.lastadapter.BR;
 
 import kr.edcan.rerant.databinding.CommonListviewContentBinding;
 import kr.edcan.rerant.databinding.ReserveSearchinfoMenuContentBinding;

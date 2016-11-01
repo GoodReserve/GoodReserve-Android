@@ -15,9 +15,9 @@
         tools:context="kr.edcan.rerant.activity.FilterSelectActivity">
 
         <LinearLayout
-            android:layout_marginBottom="60dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="60dp"
             android:orientation="vertical">
 
             <android.support.design.widget.AppBarLayout
@@ -30,6 +30,7 @@
                     android:layout_height="wrap_content"
                     android:background="#FFF"
                     android:theme="@style/AppTheme.ActionBar"
+                    app:contentInsetStartWithNavigation="0dp"
                     app:titleTextColor="@color/colorPrimary" />
             </android.support.design.widget.AppBarLayout>
 

@@ -6,4 +6,6 @@
     <dimen name="stroke_width">1dp</dimen>
     <dimen name="indicator_width">5dp</dimen>
     <dimen name="common_titlemargin">16dp</dimen>
+    <dimen name="button_radius">22dp</dimen>
+
 </resources>

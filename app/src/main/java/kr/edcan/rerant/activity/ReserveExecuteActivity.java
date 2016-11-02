@@ -101,14 +101,14 @@ public class ReserveExecuteActivity extends AppCompatActivity implements View.On
                                                         manager.getActiveUser().second.get_id(),
                                                         new Date(System.currentTimeMillis() + 604800000),
                                                         personCount,
-                                                        (isPayNow)?0:1,
+                                                        (isPayNow) ? 0 : 1,
                                                         manager.getCurrentBucket().second.get_id(),
                                                         StringUtils.getTotalMoneyint(manager.getCurrentBucket().second.getMenus())
                                                 );
                                                 generateReservation.enqueue(new Callback<Reservation>() {
                                                     @Override
                                                     public void onResponse(Call<Reservation> call, Response<Reservation> response) {
-                                                        switch (response.code()){
+                                                        switch (response.code()) {
                                                             case 200:
                                                                 Toast.makeText(ReserveExecuteActivity.this, "예약이 완료되었습니다!", Toast.LENGTH_SHORT).show();
                                                                 startActivity(new Intent(getApplicationContext(), ReserveCompleteActivity.class).putExtra("id", response.body().get_id()));
@@ -119,7 +119,7 @@ public class ReserveExecuteActivity extends AppCompatActivity implements View.On
                                                                 manager.destroyAllBucket();
                                                                 break;
                                                             default:
-                                                                Log.e("asdf", response.code()+"");
+                                                                Log.e("asdf", response.code() + "");
                                                                 Toast.makeText(ReserveExecuteActivity.this, "서버와의 연동에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
                                                                 break;
                                                         }
@@ -128,7 +128,7 @@ public class ReserveExecuteActivity extends AppCompatActivity implements View.On
                                                     @Override
                                                     public void onFailure(Call<Reservation> call, Throwable t) {
                                                         Toast.makeText(ReserveExecuteActivity.this, "서버와의 연동에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
-                                                        Log.e("asdf", t.getMessage()+"");
+                                                        Log.e("asdf", t.getMessage() + "");
 
                                                     }
                                                 });

@@ -164,13 +164,13 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
                             headerList.add(response.body().get(i));
                             Log.e("asdf", response.body().get(i).getName());
                         }
+                        pageAdapter = new PagerAdapterClass(getApplicationContext());
                         break;
                     default:
                         Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
                         Log.e("asdf", response.code() + "");
                         break;
                 }
-                pageAdapter = new PagerAdapterClass(getApplicationContext());
             }
 
             @Override

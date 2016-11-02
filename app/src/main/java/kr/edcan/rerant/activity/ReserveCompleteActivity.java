@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -69,6 +71,18 @@ public class ReserveCompleteActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Reservation> call, Throwable t) {
 
+            }
+        });
+        binding.reserveConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        binding.reserveCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ReserveCompleteActivity.this, "정식 서비스 이용때 지원 예정입니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -317,7 +317,8 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bottomReserveHistory:
-                startActivity(new Intent(getApplicationContext(), ReserveLogActivity.class));
+//                startActivity(new Intent(getApplicationContext(), ReserveLogActivity.class));
+                Toast.makeText(MainActivity.this, "정식 서비스 이용때 지원 예정입니다.", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.bottomReserveLaunch:
                 startActivity(new Intent(getApplicationContext(), ReserveSearchActivity.class));

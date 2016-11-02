@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class MyPageActivity extends AppCompatActivity {
 
     ActivityMyPageBinding binding;
     DataManager manager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,12 +58,16 @@ public class MyPageActivity extends AppCompatActivity {
         binding.myPageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i){
+                switch (i) {
                     case 3:
                         manager.removeAllData();
                         startActivity(new Intent(getApplicationContext(), AuthActivity.class));
                         finish();
                         break;
+                    default:
+                        Toast.makeText(MyPageActivity.this, "정식 서비스 이용때 지원 예정입니다.", Toast.LENGTH_SHORT).show();
+                        break;
+
 
                 }
             }
@@ -70,7 +76,7 @@ public class MyPageActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
         }

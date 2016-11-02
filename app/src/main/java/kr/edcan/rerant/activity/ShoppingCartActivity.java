@@ -18,13 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.github.nitrico.lastadapter.BR;
 import com.github.nitrico.lastadapter.LastAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import kr.edcan.rerant.BR;
 import kr.edcan.rerant.R;
 import kr.edcan.rerant.databinding.ActivityShoppingCartBinding;
 import kr.edcan.rerant.databinding.ShoppingcartRecyclerContentBinding;

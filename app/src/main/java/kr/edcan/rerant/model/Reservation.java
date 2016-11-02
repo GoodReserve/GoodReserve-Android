@@ -15,10 +15,10 @@ public class Reservation {
     * */
     private String _id, reservation_marker, restaurant_id, restaurant_name, reservation_code;
     private Date reservation_time;
-    private ArrayList<Menu> reservation_menu;
+    private Bucket reservation_menu;
     private int reservation_people, reservation_payment, reservation_price, cancel_type, reservation_status;
 
-    public Reservation(String _id, String reservation_marker, String restaurant_id, String restaurant_name, String reservation_code, Date reservation_time, ArrayList<Menu> reservation_menu, int reservation_people, int reservation_payment, int reservation_price, int cancel_type, int reservation_status) {
+    public Reservation(String _id, String reservation_marker, String restaurant_id, String restaurant_name, String reservation_code, Date reservation_time, Bucket reservation_menu, int reservation_people, int reservation_payment, int reservation_price, int cancel_type, int reservation_status) {
         this._id = _id;
         this.reservation_marker = reservation_marker;
         this.restaurant_id = restaurant_id;
@@ -57,7 +57,7 @@ public class Reservation {
         return reservation_time;
     }
 
-    public ArrayList<Menu> getReservation_menu() {
+    public Bucket getReservation_menu() {
         return reservation_menu;
     }
 

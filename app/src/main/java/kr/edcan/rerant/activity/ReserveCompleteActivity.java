@@ -11,10 +11,17 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import kr.edcan.rerant.R;
 import kr.edcan.rerant.databinding.ActivityReserveCompleteBinding;
+import kr.edcan.rerant.model.Bucket;
+import kr.edcan.rerant.model.Menu;
 import kr.edcan.rerant.model.Reservation;
 import kr.edcan.rerant.utils.NetworkHelper;
 import retrofit2.Call;
@@ -43,10 +50,15 @@ public class ReserveCompleteActivity extends AppCompatActivity {
                 switch (response.code()) {
                     case 200:
                         Reservation data = response.body();
+                        String menuResult = "";
+                        Bucket bucket = data.getReservation_menu();
+                        for(Menu m : bucket.getMenus()){
+                            menuResult += m.getName() + " ";
+                        }
                         binding.reserveCode.setText(data.getReservation_code());
                         binding.reserveDateStatus.setText(data.getReservation_time().toLocaleString());
                         binding.reserveResTitle.setText(data.getRestaurant_name());
-                        binding.reserveInfo.setText("");
+                        binding.reserveInfo.setText(menuResult);
                         binding.reserveMoney.setText(data.getReservation_price()+" 원");
                         break;
                     default:

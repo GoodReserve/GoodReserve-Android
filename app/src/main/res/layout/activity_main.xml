@@ -44,13 +44,15 @@
         </android.support.design.widget.CoordinatorLayout>
 
         <RelativeLayout
+            android:id="@+id/bottomBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/colorPrimary"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:paddingRight="16dp"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -59,42 +61,43 @@
                 android:orientation="horizontal">
 
                 <kr.edcan.rerant.views.CartaTagView
+                    android:id="@+id/bottomReserveHistory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:drawableLeft="@drawable/ic_btn_bottom_basket"
                     android:drawablePadding="10dp"
+                    android:maxLines="1"
                     android:paddingBottom="10dp"
                     android:paddingLeft="40dp"
-                    android:maxLines="1"
                     android:paddingRight="40dp"
-                    android:layout_marginRight="10dp"
+                    android:background="@drawable/selector_border"
                     android:paddingTop="10dp"
                     android:text="예약내역"
                     app:fullMode="false"
-                    app:themeColor="@android:color/white"
-                    android:id="@+id/cartaTagView2" />
+                    app:themeColor="@android:color/white" />
 
                 <kr.edcan.rerant.views.CartaTagView
-                    app:elevation="5dp"
+                    android:id="@+id/bottomReserveLaunch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:drawableLeft="@drawable/ic_btn_bottom_reserve"
                     android:drawablePadding="10dp"
+                    android:maxLines="1"
                     android:paddingBottom="10dp"
                     android:paddingLeft="40dp"
                     android:paddingRight="40dp"
-                    android:maxLines="1"
                     android:paddingTop="10dp"
                     android:text="예약하기"
+                    app:elevation="5dp"
                     app:fullMode="true"
-                    app:textThemeColorEnabled="true"
                     app:textThemeColor="@color/colorPrimary"
-                    app:themeColor="@android:color/white"
-                    android:id="@+id/cartaTagView" />
+                    app:textThemeColorEnabled="true"
+                    app:themeColor="@android:color/white" />
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

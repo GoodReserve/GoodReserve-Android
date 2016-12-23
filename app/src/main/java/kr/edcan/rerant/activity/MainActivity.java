@@ -12,42 +12,54 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Network;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.v4.util.Pair;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.github.nitrico.lastadapter.BR;
 import com.github.nitrico.lastadapter.LastAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import kr.edcan.rerant.BR;
 import kr.edcan.rerant.R;
 import kr.edcan.rerant.databinding.ActivityMainBinding;
 import kr.edcan.rerant.databinding.MainFirstHeaderBinding;
 import kr.edcan.rerant.databinding.MainHeaderViewpagerLayoutBinding;
+import kr.edcan.rerant.databinding.MainRecyclerContentBinding;
 import kr.edcan.rerant.model.MainContent;
 import kr.edcan.rerant.model.MainHeader;
 import kr.edcan.rerant.model.MainTopHeader;
+import kr.edcan.rerant.model.Reservation;
 import kr.edcan.rerant.model.Restaurant;
+import kr.edcan.rerant.model.User;
+import kr.edcan.rerant.utils.DataManager;
+import kr.edcan.rerant.utils.ImageSingleTon;
+import kr.edcan.rerant.utils.NetworkHelper;
+import kr.edcan.rerant.utils.NetworkInterface;
+import kr.edcan.rerant.utils.StringUtils;
 import kr.edcan.rerant.views.RoundImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity implements LastAdapter.OnClickListener, LastAdapter.OnBindListener, LastAdapter.LayoutHandler {
+public class MainActivity extends AppCompatActivity implements LastAdapter.OnClickListener, LastAdapter.OnBindListener, LastAdapter.LayoutHandler, View.OnClickListener {
 
     final static int PAGER_SCROLL_DELAY = 3000;
     ActivityMainBinding binding;
@@ -56,64 +68,150 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     ArrayList<RoundImageView> indicatorArr;
     PagerAdapterClass pageAdapter;
     Handler viewPagerHandler = new Handler();
+    DataManager manager;
+    NetworkInterface service;
+    Reservation reservation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startActivity(new Intent(getApplicationContext(), ReserveSearchInfoActivity.class));
-//        finish();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("");
         binding.toolbar.setBackgroundColor(Color.WHITE);
         binding.progressLoading.startAnimation();
-        setData();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                initUI();
-            }
-        }, 600);
+        checkAuthStatus();
     }
 
-    private void setData() {
+    private void checkAuthStatus() {
+        manager = new DataManager(this);
+        service = NetworkHelper.getNetworkInstance();
+        Pair<Boolean, User> userPair = manager.getActiveUser();
+        if (!userPair.first) {
+            startActivity(new Intent(getApplicationContext(), AuthActivity.class));
+            finish();
+        } else {
+            // validate
+            String token = userPair.second.getAuth_token();
+            switch (userPair.second.getUserType()) {
+                case 0:
+                    Call<User> facebookLogin = NetworkHelper.getNetworkInstance().facebookLogin(token);
+                    facebookLogin.enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            switch (response.code()) {
+                                case 200:
+                                    Toast.makeText(MainActivity.this, response.body().getName() + " 님 안녕하세요!", Toast.LENGTH_SHORT).show();
+                                    manager.saveUserInfo(response.body(), 0);
+                                    setRecommendData();
+                                    break;
+                                default:
+                                    Toast.makeText(MainActivity.this, "로그인된 계정의 세션이 만료되어, 다시 로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+                                    Log.e("asdf", response.code() + "");
+                                    break;
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), AuthActivity.class));
+                            finish();
+                            Log.e("asdf", t.getMessage());
+                        }
+                    });
+                    break;
+                case 1:
+                    Call<User> authenticateUser = NetworkHelper.getNetworkInstance().authenticateUser(token);
+                    authenticateUser.enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            switch (response.code()) {
+                                case 200:
+                                    Toast.makeText(MainActivity.this, response.body().getName() + " 님 안녕하세요!", Toast.LENGTH_SHORT).show();
+                                    manager.saveUserInfo(response.body(), 1);
+                                    setRecommendData();
+                                    break;
+                                default:
+                                    Toast.makeText(MainActivity.this, "로그인된 계정의 세션이 만료되어, 다시 로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+                                    Log.e("asdf", response.code() + "");
+                                    break;
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), AuthActivity.class));
+                            finish();
+                            Log.e("asdf", t.getMessage());
+                        }
+                    });
+                    break;
+            }
+        }
+    }
+
+    private void setRecommendData() {
+        headerList = new ArrayList<>();
+        Call<ArrayList<Restaurant>> getRestaurantList = NetworkHelper.getNetworkInstance().getRestaurantList();
+        getRestaurantList.enqueue(new Callback<ArrayList<Restaurant>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Restaurant>> call, Response<ArrayList<Restaurant>> response) {
+                switch (response.code()) {
+                    case 200:
+                        for (int i = 0; i < ((response.body().size() < 5) ? response.body().size() : 5); i++) {
+                            headerList.add(response.body().get(i));
+                            Log.e("asdf", response.body().get(i).getName());
+                        }
+                        pageAdapter = new PagerAdapterClass(getApplicationContext());
+                        break;
+                    default:
+                        Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
+                        Log.e("asdf", response.code() + "");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Restaurant>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
+                Log.e("asdf", t.getMessage());
+            }
+        });
+        setReservationData();
+    }
+
+    private void setReservationData() {
         mainContentList = new ArrayList<>();
         mainContentList.add(new MainTopHeader());
-        mainContentList.add(new MainHeader("곧 예약시간에 도달", "아래의 음식점에 예약한 시간이 얼마 남지 않았습니다."));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainHeader("찜한 음식점 리스트", "찜한 음식점에 따른 예약이 취소될 경우 빠르게 예약할 수 있습니다."));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
-        mainContentList.add(new MainContent("REZRO-4062", "종현이네 원조 보쌈 24시", "1일 23시간 43분 남음"));
+        Call<ArrayList<Reservation>> getMyReservation = NetworkHelper.getNetworkInstance().getMyReservation(manager.getActiveUser().second.get_id());
+        getMyReservation.enqueue(new Callback<ArrayList<Reservation>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Reservation>> call, Response<ArrayList<Reservation>> response) {
+                switch (response.code()) {
+                    case 200:
+                        if (response.body().size() >= 1) {
+                            mainContentList.add(new MainHeader("곧 예약시간에 도달", "아래의 음식점에 예약한 시간이 얼마 남지 않았습니다."));
+                            reservation = response.body().get(0);
+                            mainContentList.add(new MainContent(reservation.getReservation_code(), reservation.getRestaurant_name(), reservation.getReservation_time().toLocaleString()));
+                        } else mainContentList.add("");
+                        initUI();
+                        break;
+                    default:
+                        Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
+                        Log.e("asdf", response.code() + "");
+                        break;
+                }
+            }
 
-        headerList = new ArrayList<>();
-        headerList.add(new Restaurant("미스터 피자 어쩌고 저쩌고", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        headerList.add(new Restaurant("창림식 스웩 어쩌고 저꺼", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        headerList.add(new Restaurant("창림식 스웩 어쩌고 저꺼", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        headerList.add(new Restaurant("창림식 스웩 어쩌고 저꺼", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        headerList.add(new Restaurant("창림식 스웩 어쩌고 저꺼", "asdf", "일하기 싫다 아아아아ㅏ앙아ㅏ아아ㅏㄹㄱ"));
-        pageAdapter = new PagerAdapterClass(getApplicationContext());
+            @Override
+            public void onFailure(Call<ArrayList<Reservation>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "서버와의 연결에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
+                Log.e("asdf1", t.getMessage());
+            }
+        });
+
     }
 
     private void initUI() {
@@ -121,12 +219,16 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         binding.mainRecycler.setVisibility(View.VISIBLE);
         binding.progressLoading.setVisibility(View.GONE);
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+        binding.bottomBar.setVisibility(View.VISIBLE);
         binding.mainRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        binding.bottomReserveHistory.setOnClickListener(this);
+        binding.bottomReserveLaunch.setOnClickListener(this);
         LastAdapter.with(mainContentList, BR.item)
                 .layoutHandler(this)
                 .map(MainTopHeader.class, R.layout.main_first_header)
                 .map(MainHeader.class, R.layout.main_recycler_header)
                 .map(MainContent.class, R.layout.main_recycler_content)
+                .map(String.class, R.layout.main_recycler_blank)
                 .onClickListener(this)
                 .onBindListener(this)
                 .into(binding.mainRecycler);
@@ -175,12 +277,31 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
             case R.layout.main_first_header:
                 MainFirstHeaderBinding binding = DataBindingUtil.getBinding(view);
                 if (binding.viewPager.getAdapter() == null) {
+                    binding.viewPager.setOffscreenPageLimit(5);
                     binding.viewPager.setAdapter(pageAdapter);
                     setViewPagerScroll(binding.viewPager);
                     setViewPagerIndicator(binding.indicatorParent);
                     binding.viewPager.addOnPageChangeListener(pageListener);
                 }
                 break;
+            case R.layout.main_recycler_content:
+                MainRecyclerContentBinding contentBinding = DataBindingUtil.getBinding(view);
+                contentBinding.mainContentDetailExecute.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getApplicationContext(), ReserveCompleteActivity.class).putExtra("id", reservation.get_id()));
+                    }
+                });
+                contentBinding.mainContentAlertExecute.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        shareText(
+                                manager.getActiveUser().second.getName() + " 님이 품격있는 외식 문화의 시작, Rerant을 통해 " +
+                                        reservation.getRestaurant_name() + "에서 예약했습니다. 더 많은 정보를 보려면 아래 링크를 클릭해 주세요. http://goo.gl/rerantdownload"
+                        );
+
+                    }
+                });
         }
     }
 
@@ -188,7 +309,21 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
     public int getItemLayout(@NotNull Object item, int i) {
         if (item instanceof MainHeader) return R.layout.main_recycler_header;
         else if (item instanceof MainTopHeader) return R.layout.main_first_header;
+        else if (item instanceof String) return R.layout.main_recycler_blank;
         else return R.layout.main_recycler_content;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bottomReserveHistory:
+//                startActivity(new Intent(getApplicationContext(), ReserveLogActivity.class));
+                Toast.makeText(MainActivity.this, "정식 서비스 이용때 지원 예정입니다.", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.bottomReserveLaunch:
+                startActivity(new Intent(getApplicationContext(), ReserveSearchActivity.class));
+                break;
+        }
     }
 
     /**
@@ -211,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
             Restaurant data = headerList.get(position);
             binding.viewPagerResName.setText(data.getName());
             binding.viewPagerResLocation.setText(data.getAddress());
-            binding.viewPagerImage.setImageResource(R.drawable.pusheen);
+            binding.viewPagerImage.setImageUrl(StringUtils.getFullImageUrl(data.getThumbnail()), ImageSingleTon.getInstance(MainActivity.this).getImageLoader());
             binding.viewPagerImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             container.addView(binding.getRoot(), 0);
             return binding.getRoot();
@@ -277,4 +412,12 @@ public class MainActivity extends AppCompatActivity implements LastAdapter.OnCli
         public void onPageScrollStateChanged(int state) {
         }
     };
+
+    private void shareText(String s) {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, s);
+        startActivity(Intent.createChooser(sharingIntent, "예약 내용 공유하기"));
+    }
 }
+

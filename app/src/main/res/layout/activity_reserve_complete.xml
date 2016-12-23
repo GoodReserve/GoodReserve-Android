@@ -21,8 +21,10 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.ActionBar" />
+                android:theme="@style/AppTheme.ActionBar"
+                app:contentInsetStartWithNavigation="0dp" />
         </android.support.design.widget.AppBarLayout>
 
         <RelativeLayout
@@ -46,8 +48,8 @@
                         android:layout_height="wrap_content"
                         app:cardBackgroundColor="@color/colorPrimary"
                         app:cardCornerRadius="2dp"
-                        app:cardUseCompatPadding="true"
-                        app:cardElevation="5dp">
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -65,7 +67,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:singleLine="true"
-                                    android:text="REZRO_4062"
                                     android:textColor="@android:color/white"
                                     android:textSize="30sp"
                                     android:textStyle="bold" />
@@ -102,8 +103,8 @@
                         android:layout_height="wrap_content"
                         app:cardBackgroundColor="#FFFFFF"
                         app:cardCornerRadius="2dp"
-                        app:cardUseCompatPadding="true"
-                        app:cardElevation="5dp">
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -116,7 +117,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="16dp"
-                                android:text="1일 9시간 32분 남음"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
@@ -133,7 +133,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="16dp"
-                                android:text="레스토랑 드 태윤 프리미엄"
                                 android:textColor="@color/textColor"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -147,7 +146,6 @@
                                 android:layout_marginLeft="16dp"
                                 android:layout_marginRight="16dp"
                                 android:layout_marginTop="5dp"
-                                android:text="2012341231231231asdfasdfasdf2312312312adfsadfsadfasdfasdfasdfsadfasdfsdffasdfasdfasdfasdfasdfasd3122312312312312312321"
                                 android:textColor="@color/textColorSub"
                                 android:textSize="12sp" />
 
@@ -175,7 +173,6 @@
                                 android:layout_marginLeft="16dp"
                                 android:layout_marginRight="16dp"
                                 android:layout_marginTop="5dp"
-                                android:text="20000원"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />

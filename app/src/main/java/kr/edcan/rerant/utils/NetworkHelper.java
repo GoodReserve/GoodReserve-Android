@@ -15,12 +15,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by KOHA_DESKTOP on 2016. 6. 29..
  */
-public class GoodReserveNetworkHelper {
+public class NetworkHelper {
     private Context context;
     final public static String url = "http://kafuuchino.one";
-    final public static int port = 8000;
+    final public static int port = 3000;
 
-    public GoodReserveNetworkHelper(Context context) {
+    public NetworkHelper(Context context) {
         this.context = context;
     }
 

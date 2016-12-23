@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white">#FFF</color>
+    <color name="colorRippleD">#99000000</color>
+    <color name="colorRippleL">#bbffffff</color>
     <color name="indicatorPrimary">#FFFFFF</color>
     <color name="indicatorSub">#55FFFFFF</color>
     <color name="colorPrimary">#993939</color>
@@ -12,6 +14,6 @@
     <color name="textColorDark">#99000000</color>
     <color name="textColorSub">#55000000</color>
     <color name="textColor">#99000000</color>
-    <color name="dividerColor">#44FFFFFF</color>
+    <color name="dividerColor">#11000000</color>
     <color name="textColorWhiteSub">#99FFFFFF</color>
 </resources>

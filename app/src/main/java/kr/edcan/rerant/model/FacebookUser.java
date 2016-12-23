@@ -6,13 +6,12 @@ package kr.edcan.rerant.model;
 public class FacebookUser {
 
 
-    public String userid, name, token, profile_image;
+    public String userid, name, token;
 
-    public FacebookUser(String userid, String name, String token, String profile_image) {
+    public FacebookUser(String userid, String name, String token) {
         this.userid = userid;
         this.name = name;
         this.token = token;
-        this.profile_image = profile_image;
     }
 
     public String getUserid() {
@@ -27,7 +26,4 @@ public class FacebookUser {
         return token;
     }
 
-    public String getProfile_image() {
-        return profile_image;
-    }
 }

@@ -26,6 +26,7 @@
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
+                    app:contentInsetStartWithNavigation="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#FFF"
@@ -71,6 +72,7 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:gravity="center"
                     android:text="한식"
                     android:textSize="15sp" />
@@ -142,6 +144,7 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:gravity="center"
                     android:text="회식"
                     android:textSize="15sp" />

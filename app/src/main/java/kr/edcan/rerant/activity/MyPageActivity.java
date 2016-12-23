@@ -7,6 +7,7 @@
 package kr.edcan.rerant.activity;
 
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -21,10 +23,13 @@ import kr.edcan.rerant.R;
 import kr.edcan.rerant.adapter.CommonListViewAdapter;
 import kr.edcan.rerant.databinding.ActivityMyPageBinding;
 import kr.edcan.rerant.model.CommonListData;
+import kr.edcan.rerant.utils.DataManager;
 
 public class MyPageActivity extends AppCompatActivity {
 
     ActivityMyPageBinding binding;
+    DataManager manager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +39,7 @@ public class MyPageActivity extends AppCompatActivity {
     }
 
     private void initAppbarLayout() {
+        manager = new DataManager(getApplicationContext());
         setSupportActionBar(binding.toolbar);
         binding.toolbar.setBackgroundColor(Color.WHITE);
         binding.toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
@@ -52,8 +58,17 @@ public class MyPageActivity extends AppCompatActivity {
         binding.myPageListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i){
-//                    case
+                switch (i) {
+                    case 3:
+                        manager.removeAllData();
+                        startActivity(new Intent(getApplicationContext(), AuthActivity.class));
+                        finish();
+                        break;
+                    default:
+                        Toast.makeText(MyPageActivity.this, "정식 서비스 이용때 지원 예정입니다.", Toast.LENGTH_SHORT).show();
+                        break;
+
+
                 }
             }
         });
@@ -61,7 +76,7 @@ public class MyPageActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
         }

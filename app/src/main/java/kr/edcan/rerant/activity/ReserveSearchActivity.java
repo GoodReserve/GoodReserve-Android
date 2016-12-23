@@ -6,12 +6,15 @@
 
 package kr.edcan.rerant.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.net.Network;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,11 +35,23 @@ import kr.edcan.rerant.databinding.MainFirstHeaderBinding;
 import kr.edcan.rerant.databinding.ReserveRecyclerContentBinding;
 import kr.edcan.rerant.model.MainHeader;
 import kr.edcan.rerant.model.MainTopHeader;
+import kr.edcan.rerant.model.Reservation;
 import kr.edcan.rerant.model.Restaurant;
+import kr.edcan.rerant.utils.ImageSingleTon;
+import kr.edcan.rerant.utils.NetworkHelper;
+import kr.edcan.rerant.utils.StringUtils;
 import kr.edcan.rerant.views.CartaTagView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class ReserveSearchActivity extends AppCompatActivity implements LastAdapter.LayoutHandler, LastAdapter.OnBindListener {
+public class ReserveSearchActivity extends AppCompatActivity implements LastAdapter.LayoutHandler, LastAdapter.OnBindListener, LastAdapter.OnClickListener {
 
+    public static Activity activity;
+
+    public static void finishThis() {
+        if (activity != null) activity.finish();
+    }
 
     private static final int FILTER_INTENT_CODE = 6974;
     ActivityReserveSearchBinding binding;
@@ -48,6 +63,8 @@ public class ReserveSearchActivity extends AppCompatActivity implements LastAdap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reserve_search);
         initAppbarLayout();
         setDefault();
@@ -55,19 +72,39 @@ public class ReserveSearchActivity extends AppCompatActivity implements LastAdap
     }
 
     private void setData() {
-        arrayList.add(new Restaurant("레스토랑 드 태윤 프리미엄", "", "앗 앗 앗"));
-        arrayList.add(new Restaurant("레스토랑 드 태윤 프리미엄", "", "앗 앗 앗"));
-        arrayList.add(new Restaurant("레스토랑 드 태윤 프리미엄", "", "앗 앗 앗"));
-        arrayList.add(new Restaurant("레스토랑 드 태윤 프리미엄", "", "앗 앗 앗"));
-        arrayList.add(new Restaurant("레스토랑 드 태윤 프리미엄", "", "앗 앗 앗"));
-        arrayList.add(new Restaurant("레스토랑 드 태윤 프리미엄", "", "앗 앗 앗"));
-        arrayList.add(new Restaurant("레스토랑 드 태윤 프리미엄", "", "앗 앗 앗"));
-        arrayList.add(new Restaurant("레스토랑 드 태윤 프리미엄", "", "앗 앗 앗"));
+        Call<ArrayList<Restaurant>> getRestaurantList = NetworkHelper.getNetworkInstance().getRestaurantList();
+        getRestaurantList.enqueue(new Callback<ArrayList<Restaurant>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Restaurant>> call, Response<ArrayList<Restaurant>> response) {
+                switch (response.code()) {
+                    case 200:
+                        for (Restaurant restaurant : response.body()) {
+                            arrayList.add(restaurant);
+                        }
+                        initUI();
+                        break;
+                    default:
+                        Toast.makeText(ReserveSearchActivity.this, "서버와의 연결에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
+                        Log.e("asdf", response.code() + "");
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Restaurant>> call, Throwable t) {
+                Toast.makeText(ReserveSearchActivity.this, "서버와의 연결에 문제가 있습니다.", Toast.LENGTH_SHORT).show();
+                Log.e("asdf", t.getMessage());
+            }
+        });
+    }
+
+    private void initUI() {
         binding.reserveSearchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         LastAdapter.with(arrayList, BR.item)
                 .map(Restaurant.class, R.layout.reserve_recycler_content)
                 .layoutHandler(this)
                 .onBindListener(this)
+                .onClickListener(this)
                 .into(binding.reserveSearchRecyclerView);
     }
 
@@ -137,14 +174,16 @@ public class ReserveSearchActivity extends AppCompatActivity implements LastAdap
     public void onBind(@NotNull Object o, @NotNull View view, int type, int position) {
         switch (type) {
             case R.layout.reserve_recycler_content:
+                Restaurant data = (Restaurant) o;
                 ReserveRecyclerContentBinding binding = DataBindingUtil.getBinding(view);
-                setCurrentStatus(binding.reserveResCardStatus, false);
+                setCurrentStatus(binding.reserveResCardStatus, (data.getReservation_check() == 0));
                 binding.reserveResCardShare.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(ReserveSearchActivity.this, "공유!", Toast.LENGTH_SHORT).show();
                     }
                 });
+                binding.reserveCardImage.setImageUrl(StringUtils.getFullImageUrl(data.getThumbnail()), ImageSingleTon.getInstance(this).getImageLoader());
                 break;
         }
     }
@@ -152,5 +191,15 @@ public class ReserveSearchActivity extends AppCompatActivity implements LastAdap
     public void setCurrentStatus(CartaTagView currentStatus, boolean canReserve) {
         currentStatus.setText((canReserve) ? "예약 가능" : "모두 예약됨");
         currentStatus.setTextColorForceFully((canReserve) ? colorPrimary : colorSub);
+    }
+
+    @Override
+    public void onClick(@NotNull Object o, @NotNull View view, int type, int position) {
+        switch (type) {
+            case R.layout.reserve_recycler_content:
+                startActivity(new Intent(getApplicationContext(), ReserveSearchInfoActivity.class)
+                        .putExtra("restaurant_id", arrayList.get(position).get_id()));
+                break;
+        }
     }
 }

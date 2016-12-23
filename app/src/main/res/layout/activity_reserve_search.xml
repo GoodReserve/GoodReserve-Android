@@ -23,6 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/AppTheme.ActionBar"
+
+                app:contentInsetStartWithNavigation="0dp"
                 app:layout_scrollFlags="scroll|enterAlways" />
 
             <LinearLayout

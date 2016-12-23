@@ -29,6 +29,9 @@
         <activity android:name=".activity.ReserveCompleteActivity" />
         <activity android:name=".activity.AuthActivity" />
         <activity android:name=".activity.LoginActivity"></activity>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
     </application>
 
 </manifest>

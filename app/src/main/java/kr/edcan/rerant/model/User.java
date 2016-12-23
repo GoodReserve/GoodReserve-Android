@@ -57,7 +57,47 @@ public class User {
         return reservation;
     }
 
+    public int getUserType() {
+        return userType;
+    }
+
     public ArrayList<String> getReservation_waiting() {
         return reservation_waiting;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setAuth_token(String auth_token) {
+        this.auth_token = auth_token;
+    }
+
+    public void setReservation(String reservation) {
+        this.reservation = reservation;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public void setReservation_waiting(ArrayList<String> reservation_waiting) {
+        this.reservation_waiting = reservation_waiting;
     }
 }
